@@ -37,21 +37,14 @@ int Request::writeChunkedContent(long long clientMaxBodySize)
     else
     {
         s1 = body.substr(i, contentLength);
-        if (contentLength < static_cast<long>(s1.length()))
-        {
-            logDetails = "chunk size is different than the one i got in contentLength";
-            std::cout << "1\n";
-            return (BAD_REQUEST);
-        }
+        if (contentLength < static_cast<long>(s1.length())) 
+            return (logDetails = "chunk size is different than the one i got in contentLength", BAD_REQUEST);
         i += contentLength;
         contentLength = 0;
     }
     byte_count += s1.length();
     if (byte_count > clientMaxBodySize)
-    {
-        logDetails = "the total of chunks is larger than the client Max Body Size";
-        return (CONTENT_TOO_LARGE);
-    }
+        return (logDetails = "the total of chunks is larger than the client Max Body Size", CONTENT_TOO_LARGE);
     file.write (s1.c_str(), s1.length());
     return (1);
 }
@@ -64,10 +57,7 @@ int Request::parseChunkedContent()
     if (foundDelimiter != std::string::npos)
     {
         if (i != foundDelimiter)
-        {
-            logDetails = "chunk size is different than the one i got in contentLength" ;
-            return (BAD_REQUEST);
-        }
+            return (logDetails = "chunk size is different than the one i got in contentLength" ,BAD_REQUEST);
         else
         {
             gotChunkSize = false;
@@ -97,7 +87,6 @@ int Request::parseChunked(long long clientMaxBodySize)
                 if (contentLength == 0 && (status = parseChunkedContent()) != 1)
                     return (status);
             }
-            
         }
         setBody("");
     }
@@ -107,6 +96,7 @@ int Request::parseChunked(long long clientMaxBodySize)
     }
     return (1);
 }
+
 int Request::addToFile(long long clientMaxBodySize)
 {
     std::string body = getBody();   
@@ -116,11 +106,7 @@ int Request::addToFile(long long clientMaxBodySize)
     if (!chunked)
     {
         if ((contentLength - length) < 0 || (length == 0 && contentLength))
-        {
-            logDetails = "contentLength is different than the body Size";
-            return (BAD_REQUEST);
-        }
-        // std::cout << contentLength << " " << length << std::endl;
+            return (logDetails = "contentLength is different than the body Size", BAD_REQUEST);
         contentLength -= length;
         file.write(body.c_str(), length);
         if (!contentLength)
@@ -143,34 +129,21 @@ int Request::initFile(std::string &path, long long clientMaxBodySize)
     {
         contentLength = strtod(value.c_str(), &ptr);
         if (contentLength < 0 || *ptr)
-        {
-            logDetails = "the value of contentLength is invalid";
-            return (BAD_REQUEST);
-        }
+            return (logDetails = "the value of contentLength is invalid", BAD_REQUEST);
         byte_count = contentLength;
     }
     else
-    {
-        logDetails = "don't know how to process the body, we don't have a contentLength and its not chunked";
-        return (BAD_REQUEST);
-    }
+        return (logDetails = "don't know how to process the body, we don't have a contentLength and its not chunked", BAD_REQUEST);
     if ((!contentLength && !getBody().length()) || (chunked && getBody().length() == 5) )
         return (0);
     else if (!contentLength && getBody().length() && !chunked)
-    {
-        logDetails = "contentLength is different than the body size";
-        return (BAD_REQUEST);
-    }
-    if (contentLength > clientMaxBodySize) // the value of clientMaxBodysize is not exact
-    {
-        logDetails = "contentLength is larger than the client Max Body size";
-        return (CONTENT_TOO_LARGE);
-    }
+        return (logDetails = "contentLength is different than the body size", BAD_REQUEST);
+    if (contentLength > clientMaxBodySize)
+        return (logDetails = "contentLength is larger than the client Max Body size", CONTENT_TOO_LARGE);
     try
     {
         random << path << "/file" << rand() << Tools::identity++ << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
-        //std::cout << fileName << std::endl;
         file.open(fileName.c_str());
         if (file.is_open())
             fileCreated = true;
@@ -193,10 +166,7 @@ int Client::initPost()
                 return (status);
         }
         else
-        {
-            request ->setLogDetails("we don't have access to the upload path");
-            return(FORBIDDEN);
-        }
+            return(request ->setLogDetails("we don't have access to the upload path"), FORBIDDEN);
     }
     else // this part means CGI.
     {
@@ -207,7 +177,6 @@ int Client::initPost()
             if ((status = request -> initFile(pathToTmp, _server -> getMaxBodySize())) != 1)
                 return (status);
             _cgiResponse = true;
-            // std::cout << "cgi\n";
         }
         else
         {
