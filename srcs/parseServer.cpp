@@ -70,11 +70,11 @@ void	Server::_keyAndValue(std::string line, std::string &key, std::string &value
 		return ;
 	}
 	if ((found == std::string::npos || !issKey.eof()) || (found != std::string::npos && key.empty()))
-		throw (std::runtime_error("ErrorS: unkown directives"));
+		throw (std::runtime_error("Error: unkown directives"));
 	issKey.clear();
 	std::getline(issLine, value);
 	if (value.empty() || Configuration::keySpace(value))
-		throw (std::runtime_error("ErrorS: found an empty value in directive"));
+		throw (std::runtime_error("Error: found an empty value in directive"));
 	issLine.clear();
 	return ;
 }
@@ -268,7 +268,7 @@ void	Server::_serverDirectives(std::istringstream &blockIss)
 		if (value.empty() || ((key.empty() || Configuration::keySpace(key)) && value.empty()))
 			continue ;
 		if (!this->_isServerDirective(key))
-			throw (std::runtime_error("ErrorS unkown directive"));
+			throw (std::runtime_error("Error unkown directive"));
 		if (key == "error_page")
 			errorPages.push_back(value);
 		else
