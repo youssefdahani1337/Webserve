@@ -66,8 +66,6 @@ int Request::parseChunkedContent()
         if (i != foundDelimiter)
         {
             logDetails = "chunk size is different than the one i got in contentLength" ;
-            std::cout << "2\n";
-            
             return (BAD_REQUEST);
         }
         else
@@ -120,8 +118,6 @@ int Request::addToFile(long long clientMaxBodySize)
         if ((contentLength - length) < 0 || (length == 0 && contentLength))
         {
             logDetails = "contentLength is different than the body Size";
-            std::cout << "3\n";
-
             return (BAD_REQUEST);
         }
         // std::cout << contentLength << " " << length << std::endl;
@@ -149,7 +145,6 @@ int Request::initFile(std::string &path, long long clientMaxBodySize)
         if (contentLength < 0 || *ptr)
         {
             logDetails = "the value of contentLength is invalid";
-            std::cout << "4\n";
             return (BAD_REQUEST);
         }
         byte_count = contentLength;
@@ -157,7 +152,6 @@ int Request::initFile(std::string &path, long long clientMaxBodySize)
     else
     {
         logDetails = "don't know how to process the body, we don't have a contentLength and its not chunked";
-        std::cout << "1\n";
         return (BAD_REQUEST);
     }
     if ((!contentLength && !getBody().length()) || (chunked && getBody().length() == 5) )
@@ -176,7 +170,7 @@ int Request::initFile(std::string &path, long long clientMaxBodySize)
     {
         random << path << "/file" << rand() << Tools::identity++ << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
-        std::cout << fileName << std::endl;
+        //std::cout << fileName << std::endl;
         file.open(fileName.c_str());
         if (file.is_open())
             fileCreated = true;
@@ -194,7 +188,10 @@ int Client::initPost()
     if (uploadStore != "")
     {
         if (Tools::checkIfPathValid(uploadStore))
-            request -> initFile(uploadStore, _server -> getMaxBodySize());
+        {
+            if ((status = request -> initFile(uploadStore, _server -> getMaxBodySize())) != 1)
+                return (status);
+        }
         else
         {
             request ->setLogDetails("we don't have access to the upload path");
