@@ -2,13 +2,21 @@
 
 bool    Client::checkCGI()
 {
-        std::cout << response->getFile() << "<< \n";
-        if (_location && _location->getCGI() && 
-                !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
+    // if(_statusCode > 399)
+    // {
+        if (_location && _location->getCGI())
         {
-            std::cout << "hello\n";
-            return (true);
+            if (!(_cgiPath= _location->isCGIFile(response->getFile())).empty())
+                return (true);
+            else if (isPost())
+            {
+                _statusCode = FORBIDDEN;
+                buildErrorPage();
+            }
         }
+
+    // }
+
     return (false);
 }
 void    Client::buildErrorPage()
@@ -114,8 +122,7 @@ void       Client::checkResource()
 
 bool      Client::handleResponse()
 {
-            std::cout << response->getFile() << "<< \n";
-
+response->setStatus(begin_RES);
     if (_server == NULL)
         _server =*_servers->begin();
         

@@ -47,7 +47,7 @@ char **Client::FillEnv()
 void    Client::cgiProcess(std::string tmpFile)
 {
     char    *path[3];
-    int     fd;
+    // int     fd;
     char    **env;
 
     env     = this->FillEnv();
