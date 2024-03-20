@@ -208,11 +208,6 @@ int Client::PostHandler()
         request -> setFile();
         request -> setLogDetails("the file was uploaded successfully");
         std::string fileName = request -> getFileName();
-        if (_cgiResponse)
-        {
-            response->setFile(request->getFileName());
-            response->setStatus(CGI_FILE);
-        }
         return (CREATED);
     }
     return (1);
