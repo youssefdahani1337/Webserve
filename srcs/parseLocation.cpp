@@ -52,11 +52,11 @@ void	Location::_keyAndValue(std::string line, std::string &key, std::string &val
 		return ;
 	}
 	if (((found == std::string::npos || !issKey.eof())) || (found != std::string::npos && key.empty()))
-		throw (std::runtime_error("ErrorL: unkown directives"));
+		throw (std::runtime_error("Error: unkown directives"));
 	issKey.clear();
 	std::getline(issLine, value);
 	if (value.empty() || Configuration::keySpace(value))
-		throw (std::runtime_error("ErrorL: found an empty value in directive"));
+		throw (std::runtime_error("Error: found an empty value in directive"));
 	issLine.clear();
 	return ;
 }
@@ -268,7 +268,7 @@ void	Location::_locationDirectives(std::istringstream &blockIss)
 		if (value.empty())
 			continue ;
 		if (!this->_isLocationDirective(key))
-			throw (std::runtime_error("ErrorL: unkown directive"));
+			throw (std::runtime_error("Error: unkown directive"));
 		if (key == "cgi_pass")
 			cgiInfos.push_back(value);
 		else

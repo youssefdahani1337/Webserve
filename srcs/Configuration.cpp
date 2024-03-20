@@ -83,7 +83,7 @@ void	Configuration::checkRemaining(std::string  &configFile)
 		issLine >> value;
 		Configuration::keySpace(value);
 		if (!value.empty())
-			throw (std::runtime_error("ErrorC: unknown directives"));
+			throw (std::runtime_error("Error: unknown directives"));
 		issLine.clear();
 	}
 	return ;
