@@ -60,7 +60,8 @@ void	Response::handleRedir(int statusCode, std::string location)
 bool	Response::listDir(std::string uri, std::string path)
 {
 	DIR* dir  = opendir(path.c_str());
-	struct dirent *entry;
+	struct dirent 	*entry;
+	std::string 		str;
 
 	if (!dir)
 		return (false);
@@ -75,7 +76,10 @@ bool	Response::listDir(std::string uri, std::string path)
 	{
 		if (entry->d_name[0] == '.' && strcmp(entry->d_name , "..") != 0)
 			continue;
-		_body += Tools::makeAnchor(entry->d_name);
+		
+		str = uri+ "/";
+		str.append( entry->d_name);
+		_body += Tools::makeAnchor(str.c_str(), entry->d_name);
 	}
 	_body += "</pre>";
 	_body += Tools::getBodyEnd();

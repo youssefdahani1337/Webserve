@@ -1,71 +1,50 @@
-<<<<<<< HEAD
-2024-03-20 15:37:07 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:37:14 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:37:17 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:17 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:17 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:17 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:30 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:30 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:30 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:30 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:42 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:37:42 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:37:42 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:37:42 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:37:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:55 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:55 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:55 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:37:55 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:42:57 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:42:57 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:42:57 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:43:28 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:31 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:33 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:34 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:37 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:39 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:43:44 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:43:44 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:43:44 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:43:44 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:43:57 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:43:57 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:43:57 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:43:57 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:44:18 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:44:20 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:44:24 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 15:44:28 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:28 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:28 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:28 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:41 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:44:41 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:44:41 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:44:41 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:44:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:44:56 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:44:56 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-20 15:44:56 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:44:56 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-=======
-2024-03-20 15:21:43 Server<127.0.0.1::8003 POST OUTPUT <201: the file was uploaded successfully>
->>>>>>> 64cab49b427b09c08c8611e1675ac2a0933ec73d
+2024-03-20 16:01:01 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:01:24 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-20 16:01:24 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-20 16:01:24 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-20 16:01:24 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-20 16:01:49 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:01:53 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:01:58 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:04 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:07 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:11 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:11 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:11 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:11 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:11 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:19 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:22 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:22 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:24 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:31 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:41 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:45 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-20 16:02:45 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-20 16:02:45 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:02:45 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:20 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:27 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:27 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:27 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:36 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:36 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:36 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:37 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:37 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:37 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:38 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:38 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:38 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:39 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:39 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:39 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:42 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:42 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:42 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-20 16:03:43 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>

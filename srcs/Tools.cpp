@@ -45,12 +45,12 @@ time_t	Tools::getTime()
 	return (std::time(0));
 }
 
-std::string Tools::makeAnchor(const char *str)
+std::string Tools::makeAnchor(const char *str1, const char *str)
 {
 	std::string anchor;
 
 	anchor.append("<a href='");
-	anchor.append(str);
+	anchor.append(str1);
 	anchor.append("'>");
 	anchor.append(str);
 	anchor.append("</a>\n");
