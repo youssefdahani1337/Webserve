@@ -2,11 +2,13 @@
 
 bool    Client::checkCGI()
 {
-    if (response->getStatus() == READING_FILE)
-    {
-        if (_location && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
+        std::cout << response->getFile() << "<< \n";
+        if (_location && _location->getCGI() && 
+                !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
+        {
+            std::cout << "hello\n";
             return (true);
-    }
+        }
     return (false);
 }
 void    Client::buildErrorPage()
@@ -112,7 +114,6 @@ void       Client::checkResource()
 
 bool      Client::handleResponse()
 {
-    response->setStatus(begin_RES);
     if (_server == NULL)
         _server =*_servers->begin();
         
