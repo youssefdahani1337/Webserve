@@ -114,16 +114,15 @@ void       Client::checkResource()
 
 bool      Client::handleResponse()
 {
+            std::cout << response->getFile() << "<< \n";
+
     if (_server == NULL)
         _server =*_servers->begin();
         
     if (_statusCode >= 400 && _statusCode <= 599)
         response->setStatus(ERROR);
-    else if (_statusCode >= 200 && _statusCode <= 299)
-    {
-        if (response->getStatus() != CGI_FILE)
+    else if (_statusCode >= 200 && _statusCode <= 299 && response->getStatus() != CGI_FILE)
             response->generatePage(_statusCode);
-    }
     else if (_location && _location->isRedir())
         response->setStatus(REDIR);
     else
