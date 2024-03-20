@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-03-20 15:37:07 Server<127.0.0.1::8001 GET OUTPUT <200: >
 2024-03-20 15:37:14 Server<127.0.0.1::8001 GET OUTPUT <200: >
 2024-03-20 15:37:17 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
@@ -65,3 +66,6 @@
 2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
 2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
 2024-03-20 15:45:09 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+=======
+2024-03-20 15:21:43 Server<127.0.0.1::8003 POST OUTPUT <201: the file was uploaded successfully>
+>>>>>>> 64cab49b427b09c08c8611e1675ac2a0933ec73d
