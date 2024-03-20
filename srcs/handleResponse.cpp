@@ -126,7 +126,7 @@ bool      Client::handleResponse()
     else if (_location && _location->isRedir())
         response->setStatus(REDIR);
     else
-        checkResource();
+        checkResource();    
 
     if (response->getStatus() == REDIR)
        handleRedir();
