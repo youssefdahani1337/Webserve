@@ -49,20 +49,22 @@ void    Client::cgiProcess(std::string tmpFile)
     char    *path[3];
     int     fd;
     char    **env;
+
     env     = this->FillEnv();
     path[0] = strdup(this->_cgiPath.c_str());
     path[1] = strdup(Tools::realPath(response->getFile()).c_str());
     path[2] = NULL;
-
-    fd = open(tmpFile.c_str(), O_CREAT | O_RDWR, 0777); //check
-    if (fd == -1)
+    if (isPost())
+    {
+        if (!freopen(this->request->getFileName().c_str(), "r", stdin))
+            exit(1);
+    }
+    if (!freopen(tmpFile.c_str(), "w+", stdout))
         exit(1);
-    if (dup2(fd, STDOUT_FILENO) == -1)
-        exit(2);
-    if (dup2(fd, STDERR_FILENO) == -1)
-        exit(2);
+    // if (dup2(fd, STDERR_FILENO) == -1)
+    //     exit(1);
     execve(path[0], path, env);
-    exit(3);
+    exit(1);
 }
 
 bool    Client::serverProcess()
@@ -178,7 +180,7 @@ bool    Client::handleCGI()
 {
     if (response->getStatus() == CGI_FILE)
         parseCgiFile();
-    if (response->getStatus() == CGI_ERROR  )
+    if (response->getStatus() == CGI_ERROR)
     {
         buildErrorPage();
         return (false);
