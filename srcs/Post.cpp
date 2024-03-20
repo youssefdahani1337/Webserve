@@ -170,7 +170,7 @@ int Client::initPost()
     }
     else // this part means CGI.
     {
-        if (_location -> getCGI() && (_cgiPath = _location->isCGIFile(request->getFileName())).empty())
+        if (_location -> getCGI())
         {
             std::string pathToTmp = "./tmp";
             Tools::checkIfPathValid(pathToTmp);
