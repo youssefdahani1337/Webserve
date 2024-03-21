@@ -76,10 +76,7 @@ bool	Response::listDir(std::string uri, std::string path)
 	{
 		if (entry->d_name[0] == '.' && strcmp(entry->d_name , "..") != 0)
 			continue;
-		if (uri != "/")
-			str = uri+"/";
-		else
-			str = uri;
+
 		str.append( entry->d_name);
 		str.append("/");
 		_body += Tools::makeAnchor(str.c_str(), entry->d_name);
