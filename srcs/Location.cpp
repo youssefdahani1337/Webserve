@@ -88,7 +88,6 @@ std::string Location::isCGIFile(const std::string &  fileName)
 	mapStrStr::iterator it, itend;
 	it = _cgiPass.begin();
 	itend = _cgiPass.end();
-	std::cout << ex << "<<<<\n";
 	while (it != itend)
 	{
 		if (ex == it->second)

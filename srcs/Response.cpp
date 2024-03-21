@@ -30,6 +30,7 @@ void				Response::setFileSize(size_t size) { _fileSize = size; }
 void				Response::setFile(std::string file) { this->_fileName = file; }
 void				Response::setFd(int fd){this->fd = fd;}
 void				Response::setStatus(enum Status e) { this->status = e; }
+
 void				Response::closeFd()
 {
 	if (fd != -1)

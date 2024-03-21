@@ -9,7 +9,7 @@ CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3
 
 NAME = WebServ
 
-SRCS = main.cpp Configuration.cpp  Manager.cpp Server.cpp parseServer.cpp parseLocation.cpp Location.cpp Client.cpp Message.cpp Request.cpp Response.cpp Post.cpp ParseRequest.cpp handleResponse.cpp Tools.cpp Delete.cpp cgi.cpp statusCode.cpp
+SRCS = main.cpp Configuration.cpp  Manager.cpp Server.cpp parseServer.cpp parseLocation.cpp Location.cpp Client.cpp Message.cpp Request.cpp Response.cpp Post.cpp ParseRequest.cpp handleResponse.cpp Tools.cpp Delete.cpp cgi.cpp statusCode.cpp fillEnv.cpp
 
 OBJDIR = builds
 

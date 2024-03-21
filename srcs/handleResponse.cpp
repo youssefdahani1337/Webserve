@@ -6,14 +6,7 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-        if (isPost())
-        {
-            request->setLogDetails("the file is not supported in cgi");
-            _statusCode = FORBIDDEN;
-            buildErrorPage();
-            return (false);
-        }
-    } 
+    }
     return (false);
 }
 void    Client::buildErrorPage()
@@ -116,8 +109,7 @@ void       Client::checkResource()
     response->setStatus(ERROR);
 }
 
-
-bool      Client::handleResponse()
+void    Client::handleGetyDelete()
 {
     response->setStatus(begin_RES);
     if (_server == NULL)
@@ -125,7 +117,7 @@ bool      Client::handleResponse()
         
     if (_statusCode >= 400 && _statusCode <= 599)
         response->setStatus(ERROR);
-    else if (_statusCode >= 200 && _statusCode <= 299 && !_location->getCGI())
+    else if (_statusCode >= 200 && _statusCode <= 299)
             response->generatePage(_statusCode);
     else if (_location && _location->isRedir())
         response->setStatus(REDIR);
@@ -140,6 +132,47 @@ bool      Client::handleResponse()
         buildErrorPage();
     if (checkCGI())
         runCgi();
-    return (false);
+}
+
+void    Client::handlePost()
+{
+    response->setStatus(begin_RES);
+    if (_server == NULL)
+        _server =*_servers->begin();
+        
+    if (_statusCode >= 400 && _statusCode <= 599)
+       response->setStatus(ERROR);
+    else if (_statusCode >= 200 && _statusCode <= 299 && !_cgiResponse)
+    {
+        response->generatePage(_statusCode);
+        return ;
+    }
+    else if (_location && _location->isRedir())
+        response->setStatus(REDIR);
+    else
+        checkResource();    
+
+    if (response->getStatus() == REDIR)
+       handleRedir();
+    if (response->getStatus() == DIRECTORY)
+        handleDirectory();
+    if (response->getStatus() == ERROR)
+        buildErrorPage();
+    if (checkCGI())
+        runCgi();
+    else
+    {
+        _statusCode = FORBIDDEN;
+        buildErrorPage();
+    }
+}
+
+bool      Client::handleResponse()
+{
+    if (isPost())
+        handlePost();
+    else
+        handleGetyDelete();
+    return (false);    
 }
 

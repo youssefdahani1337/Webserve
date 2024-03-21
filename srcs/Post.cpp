@@ -195,7 +195,6 @@ int Client::PostHandler()
     {
         if ((status = initPost()) != 1)
         {
-            std::cout << status << std::endl;
             return (std::remove(request -> getFileName().c_str()),
             Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
         }

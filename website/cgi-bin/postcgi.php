@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>my Simple Website</title>
+		<meta charset="UTF-8">
+		<link href="../style.css" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<a href="../index.html" >Home</a>
+			<a href="../session/">Login</a>
+			<a href="./index.html" class="active">little Magic</a>
+			<a href="../cookies/">Cookies</a>
+			<a href="../about-us.html">About us</a>
+			<a href="../surprise.html">Surprise</a>
+		</div>
+
 <?php
 // Get the JSON data from CGI input
 $json_data = file_get_contents('php://input');
@@ -31,3 +51,6 @@ if ($data !== null) {
     echo "Error: Unable to decode JSON data.";
 }
 ?>
+</div>
+</body>
+</html>
