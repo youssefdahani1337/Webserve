@@ -1,4 +1,7 @@
-2024-03-21 15:25:17 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 15:25:17 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 15:25:20 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 15:25:20 Server<127.0.0.1::8005 HEAD OUTPUT <405: Method not exist>
+2024-03-21 17:07:49 Server<127.0.0.1::8003 GET OUTPUT <200: >
+2024-03-21 17:07:52 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
+2024-03-21 17:07:52 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
+2024-03-21 17:07:54 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
+2024-03-21 17:07:54 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
+2024-03-21 17:07:56 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
+2024-03-21 17:07:56 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
