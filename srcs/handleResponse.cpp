@@ -2,14 +2,18 @@
 
 bool    Client::checkCGI()
 {
-    if (response->getStatus() == READING_FILE && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
+    if (response->getStatus() == READING_FILE)
+    {    
+        if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-    if (isPost())
-    {
-        _statusCode = FORBIDDEN;
-        buildErrorPage();
-        return (false);
-    }
+        if (isPost())
+        {
+            request->setLogDetails("the file is not supported in cgi");
+            _statusCode = FORBIDDEN;
+            buildErrorPage();
+            return (false);
+        }
+    } 
     return (false);
 }
 void    Client::buildErrorPage()

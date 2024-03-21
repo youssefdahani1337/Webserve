@@ -1,2 +1,20 @@
-2024-03-21 10:23:51 Server<127.0.0.1::8001 POST OUTPUT <200: the file was uploaded successfully>
-2024-03-21 10:23:58 Server<127.0.0.1::8001 POST OUTPUT <403: the file was uploaded successfully>
+2024-03-21 11:45:35 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:37 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:39 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:41 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:42 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:43 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:45:54 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-21 11:45:54 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-21 11:46:21 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:46:22 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:46:33 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-21 11:46:33 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-21 11:46:41 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:46:44 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:46:47 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:46:49 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 11:47:00 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
+2024-03-21 11:47:00 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
