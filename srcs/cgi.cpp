@@ -1,68 +1,26 @@
 #include "../include/Client.hpp"
 
-char ** Client::setEnv(mapStrStr envMap)
-{
-	char											**env;
-	std::string										envVar;
-	std::map<std::string, std::string>::iterator	it;
-	int												i;
-
-	i = -1;
-	env = new char*[envMap.size() + 1];
-	it = envMap.begin();
-	while (it != envMap.end())
-	{
-		envVar = it->first + "=" + it->second;
-		env[++i] = strdup(envVar.c_str());
-		it++;
-	}
-    env[++i] = NULL;
-	return (env);
-}
-
-char **Client::FillEnv()
-{
-	std::map<std::string, std::string>	envVars;
-	std::stringstream	ss;
-
-	ss << this->request->getContentLength();
-	envVars.insert(std::make_pair("CONTENT_LENGTH", ss.str()));
-	ss.clear();
-	envVars.insert(std::make_pair("CONTENT_TYPE",this->request->getHeaderValue("content-type")));
-	envVars.insert(std::make_pair("GATEWAY_INTERFACE", "CGI/1.1")); 
-	envVars.insert(std::make_pair("QUERY_STRING", this->request->getQuery()));
-    envVars.insert(std::make_pair("REQUEST_METHOD", this->request->getMethod()));
-	envVars.insert(std::make_pair("SCRIPT_NAME", Tools::findFileName(response->getFile())));
-    envVars.insert(std::make_pair("SCRIPT_FILENAME", Tools::realPath(response->getFile()) ));
-	envVars.insert(std::make_pair("SERVER_PORT",_server->getPort()));
-	envVars.insert(std::make_pair("SERVER_PROTOCOL", "HTTP/1.1"));
-	envVars.insert(std::make_pair("SERVER_SOFTWARE", "WebWaiters"));
-	envVars.insert(std::make_pair("PATH_INFO", Tools::realPath(response->getFile())));
-	envVars.insert(std::make_pair("REDIRECT_STATUS", "200")); //????
-	envVars.insert(std::make_pair("HTTP_COOKIE", this->request->getHeaderValue("cookie")));
-	envVars.insert(std::make_pair("HTTP_HOST", this->request->getHeaderValue("host")));
-    return (this->setEnv(envVars));
-}
-
 void    Client::cgiProcess(std::string tmpFile)
 {
     char    *path[3];
-    int     fd;
+    // int     fd;
     char    **env;
+
     env     = this->FillEnv();
     path[0] = strdup(this->_cgiPath.c_str());
     path[1] = strdup(Tools::realPath(response->getFile()).c_str());
     path[2] = NULL;
-
-    fd = open(tmpFile.c_str(), O_CREAT | O_RDWR, 0777); //check
-    if (fd == -1)
+    if (isPost())
+    {
+        if (!freopen(this->request->getFileName().c_str(), "r", stdin))
+            exit(1);
+    }
+    if (!freopen(tmpFile.c_str(), "w+", stdout))
         exit(1);
-    if (dup2(fd, STDOUT_FILENO) == -1)
-        exit(2);
-    if (dup2(fd, STDERR_FILENO) == -1)
-        exit(2);
+    // if (dup2(fd, STDERR_FILENO) == -1)
+    //     exit(1);
     execve(path[0], path, env);
-    exit(3);
+    exit(1);
 }
 
 bool    Client::serverProcess()
@@ -76,7 +34,10 @@ bool    Client::serverProcess()
         if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
             _statusCode = SUCCESS;
         else
+        {
+            request->setLogDetails("Bad Gateway");
             _statusCode = BAD_GATEWAY;
+        }
     }
     else if (result == 0)
     {
@@ -85,9 +46,13 @@ bool    Client::serverProcess()
         if (kill(pid, SIGTERM) == -1)
             kill(pid, SIGKILL);
         _statusCode = GATEWAY_TIMEOUT;
+        request->setLogDetails("time out in cgi");
     }
     else if (result == -1)
+    {
         _statusCode = INTERNAL_SERVER_ERROR;
+        request->setLogDetails("result -1 in cgi");
+    }
     
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
     if (this->isPost())
@@ -135,6 +100,7 @@ void    Client::parseCgiFile()
     if (!infile.is_open())
     {
         response->setStatus(CGI_ERROR);
+        request->setLogDetails("can't open output file of cgi");
         _statusCode = INTERNAL_SERVER_ERROR;
         return ;
     }
@@ -178,7 +144,7 @@ bool    Client::handleCGI()
 {
     if (response->getStatus() == CGI_FILE)
         parseCgiFile();
-    if (response->getStatus() == CGI_ERROR  )
+    if (response->getStatus() == CGI_ERROR)
     {
         buildErrorPage();
         return (false);

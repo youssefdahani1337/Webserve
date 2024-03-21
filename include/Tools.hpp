@@ -27,7 +27,8 @@ public:
 	static std::string  messageCode(int );
 	static std::string  getExtension(const std::string &);
 	static time_t       getTime(void);
-	static std::string  makeAnchor(const char *);
+	static std::string makeAnchor(const char *, const char *);
+
 
 	static void         setTypes(void);
 	static std::string  findExtension(std::string );

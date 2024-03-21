@@ -170,7 +170,7 @@ int Client::initPost()
     }
     else // this part means CGI.
     {
-        if (_location -> getCGI() && (_cgiPath = _location->isCGIFile(request->getFileName())).empty())
+        if (_location -> getCGI())
         {
             std::string pathToTmp = "./tmp";
             Tools::checkIfPathValid(pathToTmp);
@@ -195,7 +195,6 @@ int Client::PostHandler()
     {
         if ((status = initPost()) != 1)
         {
-            std::cout << status << std::endl;
             return (std::remove(request -> getFileName().c_str()),
             Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
         }

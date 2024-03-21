@@ -47,8 +47,10 @@ private:
     void                handleDirectory();
     void                handleAutoIndex();
     void                handleRedir();
-
     bool                handleCGI();
+
+    void                handleGetyDelete();
+    void                handlePost();
 
     bool                checkCGI();
     void                cgiProcess(std::string tmpFile);

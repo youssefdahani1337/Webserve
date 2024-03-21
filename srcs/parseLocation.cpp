@@ -125,7 +125,9 @@ void	Location::_redirectionDirective(std::string &value)
 	int					statusCode;
 	std::string			path;
 
-	issValue >> statusCode >> path >> std::ws;
+	issValue >> statusCode >> path;
+	if (!issValue.eof())
+		issValue >> std::ws;
 	if (issValue.fail() || !issValue.eof())
 		throw (std::runtime_error("Error: invalid parameter in the return directive"));
 	if (statusCode < 0 || statusCode >= 1000)

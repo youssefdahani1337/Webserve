@@ -1,6 +1,6 @@
 <?php
 
-$endpointURL = 'http://localhost:8001/script.php'; 
+$endpointURL = 'http://localhost:8001/cgi-bin/script.php'; 
 $data = array('key' => 'value'); 
 
 function sendPostRequest($url, $data) {

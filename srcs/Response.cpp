@@ -30,6 +30,7 @@ void				Response::setFileSize(size_t size) { _fileSize = size; }
 void				Response::setFile(std::string file) { this->_fileName = file; }
 void				Response::setFd(int fd){this->fd = fd;}
 void				Response::setStatus(enum Status e) { this->status = e; }
+
 void				Response::closeFd()
 {
 	if (fd != -1)
@@ -60,7 +61,8 @@ void	Response::handleRedir(int statusCode, std::string location)
 bool	Response::listDir(std::string uri, std::string path)
 {
 	DIR* dir  = opendir(path.c_str());
-	struct dirent *entry;
+	struct dirent 	*entry;
+	std::string 		str;
 
 	if (!dir)
 		return (false);
@@ -75,7 +77,10 @@ bool	Response::listDir(std::string uri, std::string path)
 	{
 		if (entry->d_name[0] == '.' && strcmp(entry->d_name , "..") != 0)
 			continue;
-		_body += Tools::makeAnchor(entry->d_name);
+
+		str.append( entry->d_name);
+		str.append("/");
+		_body += Tools::makeAnchor(str.c_str(), entry->d_name);
 	}
 	_body += "</pre>";
 	_body += Tools::getBodyEnd();
