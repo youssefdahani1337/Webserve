@@ -80,10 +80,10 @@ bool	Response::listDir(std::string uri, std::string path)
 	{
 		if (entry->d_name[0] == '.' && strcmp(entry->d_name , "..") != 0)
 			continue;
-
-		str.append( entry->d_name);
-		str.append("/");
-		_body += Tools::makeAnchor(str.c_str(), entry->d_name);
+		str.assign(entry->d_name);
+		if (entry->d_type == DT_DIR)
+			str.append("/");
+		_body += Tools::makeAnchor(str.c_str(), str.c_str());
 	}
 	_body += "</pre>";
 	_body += Tools::getBodyEnd();
