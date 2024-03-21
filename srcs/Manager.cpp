@@ -1,16 +1,20 @@
 #include "../include/Manager.hpp"
 
 std::ofstream Tools::logFile;
+
 Manager::Manager(std::string &configFileName) : maxFd(0)
 {
+    std::string cmd = "mkdir -m 777 -p logs";
+    system(cmd.c_str());
+    Tools::logFile.open("logs/logFile.txt");
+    if (!Tools::logFile.is_open())
+        throw std::runtime_error("problem while creating a log file");
+    
     Tools::setTypes();
     this->_servers = Configuration::parseConfigFile(configFileName);
     time = new timeval;
     time -> tv_sec = 2;
     time -> tv_usec = 0;
-    Tools::logFile.open("logs/logFile.txt");
-    if (!Tools::logFile.is_open())
-        throw std::runtime_error("problem while opening the logFile");
 }
 
 std::vector<Server *> *Manager::checkifServer(int i)
