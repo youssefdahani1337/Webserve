@@ -37,8 +37,7 @@ bool    Client::checkAndgenerate()
 {
     if (response->getStatus() == CGI_RUNNING && !serverProcess())
         return (true);
-    if (!handleCGI())
-        return (true);
+    handleCGI();
     if (response->getStatus() == READING_FILE || response->getStatus() == CGI_FILE )
         response->openFile();
     response->generateResponse(_statusCode);
@@ -53,13 +52,12 @@ bool        Client::sendResponse()
     bool            endresponse;
     std::string     msg;
 
-    endresponse = true;
 
+    endresponse = true;
     if (!_startSend && checkAndgenerate())
         return (true);
     if (outOfTimeSend())
         return(false);
-
     msg = response->getChunk(endresponse);
     fcntl(_fdClient, F_SETFL, O_NONBLOCK, FD_CLOEXEC); // THIS ARE THE ONLY OPTIONS I CAN USE
     if (-1 == write(_fdClient, msg.c_str(), msg.length()))
@@ -69,8 +67,8 @@ bool        Client::sendResponse()
     }
     if (!endresponse)
     {
-         if (response->getStatus() == CGI_FILE)
-            remove(response->getFile().c_str());
+        if (response->getStatus() == CGI_FILE)
+           remove(response->getFile().c_str());
         Tools::updateLogFile(_statusCode, request->getMethod(), _server, request->getLogDetails());
     }
     return (endresponse);
