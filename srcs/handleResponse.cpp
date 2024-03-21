@@ -6,6 +6,11 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
+        if (isPost())
+        {
+            _statusCode = FORBIDDEN;
+            buildErrorPage();
+        }
     }
     return (false);
 }

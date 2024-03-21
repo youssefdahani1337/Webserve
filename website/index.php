@@ -15,14 +15,15 @@ function sendPostRequest($url, $data)
 
     if ($httpCode === 200) {
         echo 'Request sent successfully' . PHP_EOL;
-    } else {
+    }
+    else{
         echo 'Request failed with HTTP code ' . $httpCode . PHP_EOL;
     }
-
     curl_close($ch);
 }
 
-function sendMultipleRequests($url, $data, $count) {
+function sendMultipleRequests($url, $data, $count)
+{
     for ($i = 0; $i < $count; $i++) {
         sendPostRequest($url, $data);
     }
@@ -30,5 +31,5 @@ function sendMultipleRequests($url, $data, $count) {
     echo "done";
 }
 
-sendMultipleRequests($endpointURL, $data, 7000000);
+sendMultipleRequests($endpointURL, $data, 700000);
 ?>

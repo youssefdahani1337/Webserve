@@ -46,6 +46,8 @@ bool    Client::serverProcess()
         if (kill(pid, SIGTERM) == -1)
             kill(pid, SIGKILL);
         _statusCode = GATEWAY_TIMEOUT;
+
+        //scanf("%d", &result);
         request->setLogDetails("time out in cgi");
     }
     else if (result == -1)
