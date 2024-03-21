@@ -44,9 +44,12 @@ void				Response::setheaderCgi(bool val, size_t lenHeader)
 
 bool    Response::checkReading()
 {
-	if (access(_fileName.c_str(),F_OK) == 0)
+	struct stat st;
+	if (stat(_fileName.c_str(), &st) == 0 && S_ISREG(st.st_mode) 
+			&& (st.st_mode & S_IRUSR))
 		return (1);
 	status = ERROR;
+	_statusCode = FORBIDDEN;
 	return (0);
 }
 

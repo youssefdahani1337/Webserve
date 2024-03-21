@@ -37,7 +37,7 @@ void    Client::handleRedir()
     response->handleRedir(_statusCode , location);
 }
 
-void    Client::handleAutoIndex()
+void    Client::handleAutoIndex() 
 {
     if (!response->listDir(request->getResource(), _path))
     {
