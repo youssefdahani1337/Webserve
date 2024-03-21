@@ -93,8 +93,7 @@ std::string  Tools::findExtension(std::string contentType)
 			return ("." + it->first);
 		it ++;	
 	}
-	throw BAD_REQUEST;
-    return ("");
+    return (throw BAD_REQUEST, "");
 }
 
 std::string Tools::getMimeType(const std::string & filename)
@@ -113,9 +112,9 @@ bool Tools::checkIfPathValid(std::string &path)
 {
     struct stat infos;
 
-    if (!stat(path.c_str(), &infos))
+    if (!stat(path.c_str(), &infos)) // retrieve infos about my gaven path
 	{
-        if (!access(path.c_str(), W_OK) && S_ISDIR(infos.st_mode))
+        if (!access(path.c_str(), W_OK) && S_ISDIR(infos.st_mode)) // check permissions && check if dir
 			return (true);
 	}
 	else

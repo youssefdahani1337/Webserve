@@ -8,7 +8,7 @@ Manager::Manager(std::string &configFileName) : maxFd(0)
     system(cmd.c_str());
     Tools::logFile.open("logs/logFile.txt");
     if (!Tools::logFile.is_open())
-        throw std::runtime_error("problem while creating a log file");
+        throw std::runtime_error("problem while creating a logfile");
     
     Tools::setTypes();
     this->_servers = Configuration::parseConfigFile(configFileName);
