@@ -1,2 +1,2 @@
-2024-03-20 18:37:29 Server<127.0.0.1::8001 GET OUTPUT <200: >
-2024-03-20 18:37:35 Server<127.0.0.1::8001 GET OUTPUT <200: >
+2024-03-21 10:23:51 Server<127.0.0.1::8001 POST OUTPUT <200: the file was uploaded successfully>
+2024-03-21 10:23:58 Server<127.0.0.1::8001 POST OUTPUT <403: the file was uploaded successfully>
