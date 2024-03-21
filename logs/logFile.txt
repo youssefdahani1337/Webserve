@@ -1,8 +1,0 @@
-2024-03-21 17:14:55 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:14:55 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:15:06 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-21 17:15:06 Server<127.0.0.1::8003Unknown Method  OUTPUT <408: >
-2024-03-21 17:15:10 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:15:10 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:15:21 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-21 17:15:21 Server<127.0.0.1::8003Unknown Method  OUTPUT <408: >
