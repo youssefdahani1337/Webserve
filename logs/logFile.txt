@@ -1,38 +1,4 @@
-2024-03-21 14:46:44 Server<127.0.0.1::8003 GET OUTPUT <200: >
-2024-03-21 14:46:49 Unknown Server   PUT OUTPUT <405: Method not exist>
-2024-03-21 14:46:49 Server<127.0.0.1::8003 PUT OUTPUT <405: Method not exist>
-2024-03-21 14:46:52 Unknown Server   PATCH OUTPUT <405: Method not exist>
-2024-03-21 14:46:52 Server<127.0.0.1::8003 PATCH OUTPUT <405: Method not exist>
-2024-03-21 14:46:55 Server<127.0.0.1::8003 DELETE OUTPUT <500: Error while deleting directory content>
-2024-03-21 14:46:55 Server<127.0.0.1::8003 DELETE OUTPUT <500: >
-2024-03-21 14:46:55 Server<127.0.0.1::8003 DELETE OUTPUT <500: >
-2024-03-21 14:46:59 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:46:59 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:02 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:02 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:03 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:03 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:03 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:03 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:04 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:04 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:05 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:05 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:07 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:07 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:08 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:08 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:08 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:08 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:09 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:09 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:09 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:09 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:10 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:10 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:21 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:21 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:24 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:24 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:26 Unknown Server   HEAD OUTPUT <405: Method not exist>
-2024-03-21 14:47:26 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
+2024-03-21 15:25:17 Unknown Server   HEAD OUTPUT <405: Method not exist>
+2024-03-21 15:25:17 Server<127.0.0.1::8003 HEAD OUTPUT <405: Method not exist>
+2024-03-21 15:25:20 Unknown Server   HEAD OUTPUT <405: Method not exist>
+2024-03-21 15:25:20 Server<127.0.0.1::8005 HEAD OUTPUT <405: Method not exist>
