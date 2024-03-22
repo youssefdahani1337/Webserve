@@ -1,11 +1,1 @@
-2024-03-21 17:07:49 Server<127.0.0.1::8003 GET OUTPUT <200: >
-2024-03-21 17:07:52 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:07:52 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:07:54 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:07:54 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:07:56 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 17:07:56 Server<127.0.0.1::8003 GET OUTPUT <404: Check path or method not allowed>
-
-2024-03-21 16:45:49 Server<127.0.0.1::8001 GET OUTPUT <502: Bad Gateway>
-2024-03-21 16:45:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
-2024-03-21 16:45:49 Server<127.0.0.1::8001 GET OUTPUT <404: Check path or method not allowed>
+2024-03-22 09:58:07 Server<127.0.0.1::8001 GET OUTPUT <200: >
