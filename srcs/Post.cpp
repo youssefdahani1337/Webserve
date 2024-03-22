@@ -191,6 +191,8 @@ int Client::PostHandler()
 {
     int status;
 
+    if (_location && _location->isRedir())
+       return (_location->getRedirCode());
     if (!request -> getFileCreated())
     {
         if ((status = initPost()) != 1)
