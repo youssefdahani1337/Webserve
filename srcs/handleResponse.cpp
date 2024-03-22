@@ -8,6 +8,7 @@ bool    Client::checkCGI()
             return (true); 
         if (isPost())
         {
+            request->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
             buildErrorPage();
         }
@@ -59,7 +60,7 @@ void    Client::handleDirectory()
         else
             response->setStatus(READING_FILE);
     }
-    else if (_location->getAutoIndex())
+    else if (_location->getAutoIndex() && !isPost())
         handleAutoIndex();
     else
     {
@@ -93,6 +94,7 @@ void       Client::checkResource()
                 res.append("/");
                 response->setStatus(REDIR);
                 _location->setRedir(301, res);
+                return ;
             }
             response->setStatus(DIRECTORY);
             return ;
