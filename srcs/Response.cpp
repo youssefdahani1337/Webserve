@@ -158,10 +158,10 @@ void	Response::generateHeaders()
 
 void	Response::generateResponse(short int statusCode)
 {
-	if (_statusCode == 0)
-		_statusCode = SUCCESS;
 	messageContent.clear();
 	_statusCode = statusCode;
+	if (_statusCode == 0)
+		_statusCode = SUCCESS;
 
 	generateRequestline();
 	generateHeaders();

@@ -29,11 +29,8 @@ void    Client::handleRedir()
 {
     std::string location ;
     
-    location.assign("http://");
-    location += request->getHeaderValue("host");
-    location += _location->getRedirPath();
-    _statusCode = MOVED_PERMANENTLY;
-    
+    location = _location->getRedirPath();
+    _statusCode = _location->getRedirCode();
     response->handleRedir(_statusCode , location);
 }
 
@@ -80,7 +77,14 @@ void       Client::checkResource()
     _statusCode = SUCCESS;
 
     if (stat(_path.c_str(), &st) == 0)
-    {
+    {     
+        if (!(st.st_mode & S_IRUSR))
+        {
+            _statusCode = FORBIDDEN;
+            request->setLogDetails("Right of reading file or dir in Res func");
+            response->setStatus(ERROR);
+            return ;
+        }
         if (S_ISDIR(st.st_mode))
         {
             res = request->getResource();
@@ -93,13 +97,7 @@ void       Client::checkResource()
             response->setStatus(DIRECTORY);
             return ;
         }
-        if (!(st.st_mode & S_IRUSR))
-        {
-            _statusCode = FORBIDDEN;
-            request->setLogDetails("Right of reading file or dir in Res func");
-            response->setStatus(ERROR);
-            return ;
-        }
+
         if (S_ISREG(st.st_mode))
         {
             response->setStatus(READING_FILE);
@@ -114,33 +112,9 @@ void       Client::checkResource()
     response->setStatus(ERROR);
 }
 
-void    Client::handleGetyDelete()
+bool      Client::handleResponse()
 {
-    response->setStatus(begin_RES);
-    if (_server == NULL)
-        _server =*_servers->begin();
-        
-    if (_statusCode >= 400 && _statusCode <= 599)
-        response->setStatus(ERROR);
-    else if (_statusCode >= 200 && _statusCode <= 299)
-            response->generatePage(_statusCode);
-    else if (_location && _location->isRedir())
-        response->setStatus(REDIR);
-    else
-        checkResource();    
 
-    if (response->getStatus() == REDIR)
-       handleRedir();
-    if (response->getStatus() == DIRECTORY)
-        handleDirectory();
-    if (response->getStatus() == ERROR)
-        buildErrorPage();
-    if (checkCGI())
-        runCgi();
-}
-
-void    Client::handlePost()
-{
     response->setStatus(begin_RES);
     if (_server == NULL)
         _server =*_servers->begin();
@@ -150,7 +124,7 @@ void    Client::handlePost()
     else if (_statusCode >= 200 && _statusCode <= 299 && !_cgiResponse)
     {
         response->generatePage(_statusCode);
-        return ;
+        return (false);
     }
     else if (_location && _location->isRedir())
         response->setStatus(REDIR);
@@ -158,26 +132,15 @@ void    Client::handlePost()
         checkResource();    
 
     if (response->getStatus() == REDIR)
+    {
        handleRedir();
+        return (false) ;
+    }
     if (response->getStatus() == DIRECTORY)
         handleDirectory();
     if (response->getStatus() == ERROR)
         buildErrorPage();
     if (checkCGI())
         runCgi();
-    else
-    {
-        _statusCode = FORBIDDEN;
-        buildErrorPage();
-    }
-}
-
-bool      Client::handleResponse()
-{
-    if (isPost())
-        handlePost();
-    else
-        handleGetyDelete();
     return (false);    
 }
-
