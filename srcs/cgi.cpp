@@ -3,7 +3,6 @@
 void    Client::cgiProcess(std::string tmpFile)
 {
     char    *path[3];
-    // int     fd;
     char    **env;
 
     env     = this->FillEnv();
@@ -13,14 +12,14 @@ void    Client::cgiProcess(std::string tmpFile)
     if (isPost())
     {
         if (!freopen(this->request->getFileName().c_str(), "r", stdin))
-            exit(1);
+            return ;
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
-        exit(1);
+        return ;
     // if (dup2(fd, STDERR_FILENO) == -1)
     //     exit(1);
     execve(path[0], path, env);
-    exit(1);
+    return ;
 }
 
 bool    Client::serverProcess()
@@ -31,7 +30,7 @@ bool    Client::serverProcess()
     result = waitpid(pid, &status, WNOHANG);
     if (result > 0)
     {
-        if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+        if (WIFEXITED(status))
             _statusCode = SUCCESS;
         else
         {
@@ -46,16 +45,13 @@ bool    Client::serverProcess()
         if (kill(pid, SIGTERM) == -1)
             kill(pid, SIGKILL);
         _statusCode = GATEWAY_TIMEOUT;
-
-        //scanf("%d", &result);
         request->setLogDetails("time out in cgi");
     }
     else if (result == -1)
     {
         _statusCode = INTERNAL_SERVER_ERROR;
-        request->setLogDetails("result -1 in cgi");
+        request->setLogDetails("waipid failed in cgi");
     }
-    
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
     if (this->isPost())
         remove(this->request->getFileName().c_str());
@@ -69,7 +65,6 @@ void    Client::runCgi()
     std::string tmpFile;
 
     tmpFile = Tools::RandomFile();
-    
     pid = fork();
     if (tmpFile.empty() || pid == -1)
     {
@@ -79,7 +74,12 @@ void    Client::runCgi()
         return;
     }
     else if (pid == 0)
+    {
         this->cgiProcess(tmpFile);
+        pid = getpid();
+        if (kill(pid, SIGTERM) == -1)
+            kill(pid, SIGKILL);
+    }
     else
     {
         this->response->setFile(tmpFile);
