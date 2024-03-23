@@ -1,0 +1,6 @@
+2024-03-23 14:59:48 Unknown Server   HEAD OUTPUT <405: Method not exist>
+2024-03-23 14:59:59 Unknown Server   OPTIONS OUTPUT <405: Method not exist>
+2024-03-23 14:59:59 Server<127.0.0.1::8001 OPTIONS OUTPUT <405: >
+2024-03-23 15:00:06 Unknown Server   HEAD OUTPUT <405: Method not exist>
+2024-03-23 15:00:16 Unknown Server   PATCH OUTPUT <405: Method not exist>
+2024-03-23 15:00:16 Server<127.0.0.1::8001 PATCH OUTPUT <405: >

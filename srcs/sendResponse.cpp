@@ -1,10 +1,14 @@
 #include "../include/Client.hpp"
 
-std::string Client::sendHeadError()
+void    Client::sendHeadError()
 {
     std::string str;
-
-    str.assign()
+    
+    str.assign("HTTP/1.1 405 ");
+    str.append(Tools::messageCode(METHOD_NOT_ALLOWED));
+    str.append("\r\n");
+    str.append("Server: WebWaiters\r\n\r\n");
+    write(_fdClient, str.c_str(), str.length());
 }
 
 bool    Client::checkAndgenerate()
@@ -26,7 +30,11 @@ bool        Client::sendResponse()
     bool            endresponse;
     std::string     msg;
 
-
+    if(request->getMethod() == "HEAD")
+    {
+        sendHeadError();
+        return (false);
+    }
     endresponse = true;
     if (!_startSend && checkAndgenerate())
         return (true);

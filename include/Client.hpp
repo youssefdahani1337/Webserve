@@ -61,7 +61,7 @@ private:
     bool                isMethodAllowed();
 	int					DeleteDirectory(std::string dirPath);//
     bool                checkAndgenerate();
-    std::string         sendHeadError();
+    void                sendHeadError();
 
 
 public:

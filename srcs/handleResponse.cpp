@@ -6,7 +6,7 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-        if (isPost())
+        if (isPost() && _cgiResponse)
         {
             response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
@@ -20,7 +20,7 @@ void    Client::buildErrorPage()
     response->setFile(_server->getFileError(_statusCode));
     if (response->getFile().empty() || !response->checkReading())
     {
-        response->generatePage(_statusCode);//STREAM
+        response->generatePage(_statusCode);
         return ;
     }
     response->setStatus(READING_FILE);
@@ -116,7 +116,6 @@ void       Client::checkResource()
 bool      Client::handleResponse()
 {
 
-    response->setStatus(begin_RES);
     if (_server == NULL)
         _server =*_servers->begin();
         
