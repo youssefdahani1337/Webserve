@@ -29,6 +29,8 @@ Server::Server(std::string &serverBlock, std::vector<std::string> &locations)
 	}
 	if (this->_locations.empty())
 		throw (std::runtime_error("Error: Locations missing in a server block"));
+	
+	_maxBodySize = 0;
 	return ;
 }
 

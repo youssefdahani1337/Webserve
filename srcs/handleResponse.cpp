@@ -6,7 +6,10 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-        if (isPost() && _cgiResponse)
+    }
+    if (isPost())
+    {
+        if (_cgiResponse)
         {
             response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
@@ -75,7 +78,8 @@ void       Client::checkResource()
     struct stat st;
     std::string res;
     
-    _statusCode = SUCCESS;
+    if (!isPost())
+        _statusCode = SUCCESS;
 
     if (stat(_path.c_str(), &st) == 0)
     {     
@@ -133,7 +137,7 @@ bool      Client::handleResponse()
 
     if (response->getStatus() == REDIR)
     {
-       handleRedir();
+        handleRedir();
         return (false) ;
     }
     if (response->getStatus() == DIRECTORY)
