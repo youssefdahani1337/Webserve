@@ -18,6 +18,7 @@ void    Client::cgiProcess(std::string tmpFile)
         return ;
     // if (dup2(fd, STDERR_FILENO) == -1)
     //     exit(1);
+    std::cerr << "hello";   
     execve(path[0], path, env);
     return ;
 }
@@ -55,8 +56,8 @@ bool    Client::serverProcess()
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
     if (this->isPost())
         remove(this->request->getFileName().c_str());
-    if (response->getStatus() == CGI_ERROR)
-        remove(this->response->getFile().c_str());
+   // if (response->getStatus() == CGI_ERROR)
+       // remove(this->response->getFile().c_str());
     return (1);
 }
 
@@ -97,13 +98,14 @@ void    Client::parseCgiFile()
     size_t          len = 0;
     size_t          strLen;
     size_t          lenHeader = 0;
-
+    short int       code;
     infile.open(response->getFile().c_str());
     if (!infile.is_open())
     {
         response->setStatus(CGI_ERROR);
         request->setLogDetails("can't open output file of cgi");
         _statusCode = INTERNAL_SERVER_ERROR;
+        buildErrorPage();
         return ;
     }
     _statusCode = SUCCESS;
@@ -126,11 +128,19 @@ void    Client::parseCgiFile()
             {
                 tmpLine = Tools::toUpper(tmpLine);
                 iss >>  std::ws;
-                iss >> str;
-                if (tmpLine == "status")
-                    _statusCode = strtol(str.c_str(), NULL, 10);
+                iss >> code;
+                if (tmpLine == "status" && !iss.fail())
+                {
+                    _statusCode = code;
+                    if (code >=400 && code <= 599)
+                    {
+                        response->setStatus(CGI_ERROR);
+                        std::cout << "here\n";
+                    }
+                std::cout << "code" << code << std::endl;
+                }
                 iss.clear();
-            }
+             }
             else
                 break;
         }
@@ -144,7 +154,7 @@ void    Client::parseCgiFile()
 
 bool    Client::handleCGI()
 {
-    if (response->getStatus() == CGI_FILE)
+    if (response->getStatus() == CGI_FILE || response->getStatus() == CGI_ERROR)
         parseCgiFile();
     if (response->getStatus() == CGI_ERROR)
     {

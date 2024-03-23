@@ -57,7 +57,7 @@ public:
 	void				showRequest();
 
 	//all of those funtions that i have added for post
-	int 	initFile(std::string & , long long );
+	int 	initFile(std::string & , long long, bool );
 	int 	addToFile(long long );
 	void	parseHexa();
 	int 	writeChunkedContent(long long );

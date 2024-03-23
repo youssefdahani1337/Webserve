@@ -117,7 +117,7 @@ int Request::addToFile(long long clientMaxBodySize)
         return (status);
     return (1);
 }
-int Request::initFile(std::string &path, long long clientMaxBodySize)
+int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiResponse)
 {
     std::string value;
     std::stringstream random;
@@ -142,7 +142,9 @@ int Request::initFile(std::string &path, long long clientMaxBodySize)
         return (logDetails = "contentLength is larger than the client Max Body size", CONTENT_TOO_LARGE);
     try
     {
-        random << path << "/file" << rand() << Tools::identity++ << Tools::findExtension(getHeaderValue("content-type"));
+        random << path << "/file" << rand() << Tools::identity++;
+        if (!cgiResponse)
+            random << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
         file.open(fileName.c_str());
         if (file.is_open())
@@ -162,7 +164,7 @@ int Client::initPost()
     {
         if (Tools::checkIfPathValid(uploadStore))
         {
-            if ((status = request -> initFile(uploadStore, _server -> getMaxBodySize())) != 1)
+            if ((status = request -> initFile(uploadStore, _server -> getMaxBodySize(), _cgiResponse)) != 1)
                 return (status);
         }
         else
@@ -172,11 +174,11 @@ int Client::initPost()
     {
         if (_location -> getCGI())
         {
+            _cgiResponse = true;
             std::string pathToTmp = "./tmp";
             Tools::checkIfPathValid(pathToTmp);
-            if ((status = request -> initFile(pathToTmp, _server -> getMaxBodySize())) != 1)
+            if ((status = request -> initFile(pathToTmp, _server -> getMaxBodySize(), _cgiResponse)) != 1)
                 return (status);
-            _cgiResponse = true;
         }
         else
         {
