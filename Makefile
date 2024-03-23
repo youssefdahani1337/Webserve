@@ -9,7 +9,7 @@ CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3
 
 NAME = WebServ
 
-SRCS = main.cpp Configuration.cpp  Manager.cpp Server.cpp parseServer.cpp parseLocation.cpp Location.cpp Client.cpp Message.cpp Request.cpp Response.cpp Post.cpp ParseRequest.cpp handleResponse.cpp Tools.cpp Delete.cpp cgi.cpp statusCode.cpp fillEnv.cpp
+SRCS = main.cpp Configuration.cpp  Manager.cpp Server.cpp parseServer.cpp parseLocation.cpp Location.cpp Client.cpp Message.cpp Request.cpp Response.cpp Post.cpp ParseRequest.cpp handleResponse.cpp Tools.cpp Delete.cpp cgi.cpp statusCode.cpp fillEnv.cpp sendResponse.cpp
 
 OBJDIR = builds
 
@@ -22,16 +22,16 @@ HEADERS = $(H:%.hpp=$(HEADERS_DIR)%.hpp)
 
 all : $(NAME) 
 
-$(OBJECT) : | $(OBJDIR)
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
-$(OBJDIR) :
-	@mkdir $(OBJDIR)
-
-$(OBJDIR)/%.o : %.cpp 
+$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
+	@printf "\033c"
+	@echo "Compiling $<"
 	@$(CC) $(CPPFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJECT) $(HEADERS)
-	@$(CC) $(CPPFLAGS) $(OBJECT) -o $(NAME)
+	$(CC) $(CPPFLAGS) $(OBJECT) -o $(NAME)
 	@echo "\033[0;35mcompiled !!!!\033[0m"
 
 clean : 

@@ -64,7 +64,7 @@ enum ParseReq_St
 #define TIME_OUT_SEND 20
 #define MAX_TIME_OUT_SEND 10
 #define BUFFER_SIZE 1024
-#define CGI_TIME 7
+#define CGI_TIME 5
 
 
 #define YOUSEEF_TMPDIR "/nfs/sgoinfre/goinfre/Perso/yodahani/WebServ/tmp/"

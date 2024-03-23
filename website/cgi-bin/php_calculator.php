@@ -45,7 +45,7 @@
 	
 	switch ($operator) {
 		case 'add':
-		$result = $num1 + $num2
+		$result = $num1 + $num2;
 		break;
 		case 'subtract':
 		$result = $num1 - $num2;

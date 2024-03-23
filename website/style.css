@@ -67,7 +67,7 @@ label {
     font-weight: bold;
 }
 
-input[type="number"], select, option {
+.calculator input[type="text"],input[type="number"], select, option {
     width: 100%;
     padding: 8px;
     margin: 5px 0 20px 0;

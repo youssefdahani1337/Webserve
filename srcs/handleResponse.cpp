@@ -8,7 +8,7 @@ bool    Client::checkCGI()
             return (true); 
         if (isPost())
         {
-            request->setLogDetails("is not a cgi file");
+            response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
             buildErrorPage();
         }
@@ -41,7 +41,7 @@ void    Client::handleAutoIndex()
     {
         response->setStatus(ERROR);
         _statusCode = INTERNAL_SERVER_ERROR;
-        request->setLogDetails("listing dir");
+        response->setLogDetails("listing dir");
         return ;
     }
     _statusCode = SUCCESS;
@@ -54,7 +54,7 @@ void    Client::handleDirectory()
     {
         if (!response->checkReading())
         {
-            request->setLogDetails("Reading permission index file");
+            response->setLogDetails("Reading permission index file");
             _statusCode = FORBIDDEN;
         }
         else
@@ -64,7 +64,7 @@ void    Client::handleDirectory()
         handleAutoIndex();
     else
     {
-        request->setLogDetails("No index , no auto_index");
+        response->setLogDetails("No index , no auto_index");
         response->setStatus(ERROR);
         _statusCode = FORBIDDEN;
     }
@@ -82,7 +82,7 @@ void       Client::checkResource()
         if (!(st.st_mode & S_IRUSR))
         {
             _statusCode = FORBIDDEN;
-            request->setLogDetails("Right of reading file or dir in Res func");
+            response->setLogDetails("Right of reading file or dir in Res func");
             response->setStatus(ERROR);
             return ;
         }
@@ -107,9 +107,8 @@ void       Client::checkResource()
             response->setFileSize(st.st_size);
             return ;
         }
-      
     }
-    request->setLogDetails("Resource not found in root path");
+    response->setLogDetails("Resource not found in root path");
     _statusCode = NOT_FOUND;
     response->setStatus(ERROR);
 }

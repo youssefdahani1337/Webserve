@@ -2,6 +2,21 @@
 
 mapStrStr Tools::_types;
 long	Tools::identity = 0;
+int		Tools::fdError = 0;
+
+bool	Tools::openServerFiles()
+{
+	std::string cmd = "mkdir -m 777 -p logs";
+    system(cmd.c_str());
+    Tools::logFile.open("logs/logFile.txt");
+	if (!logFile.is_open())
+		return (false);
+	fdError = open("logs/ErrorCGi.txt", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	if (fdError == -1)
+		return (false);
+	return (true);
+}
+
 std::string Tools::intTOstr(int num)
 {
     std::ostringstream iss;
@@ -112,7 +127,7 @@ bool Tools::checkIfPathValid(std::string &path)
 {
     struct stat infos;
 
-    if (!stat(path.c_str(), &infos)) // retrieve infos about my gaven path
+    if (stat(path.c_str(), &infos) == 0) // retrieve infos about my gaven path
 	{
         if (!access(path.c_str(), W_OK) && S_ISDIR(infos.st_mode)) // check permissions && check if dir
 			return (true);
@@ -155,7 +170,8 @@ void  Tools::updateLogFile(int statusCode,std::string method,  Server *server, s
 		logFile << " " << method ;
 	else
 		logFile << "Unknown Method ";
-		
+	if (statusCode == SUCCESS)
+		details = "SUCCESS";	
 	logFile << " OUTPUT <" << statusCode << ": " + details + ">" << std::endl;
 }
 

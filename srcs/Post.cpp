@@ -170,7 +170,7 @@ int Client::initPost()
         else
             return(request ->setLogDetails("we don't have access to the upload path"), FORBIDDEN);
     }
-    else // this part means CGI.
+    else
     {
         if (_location -> getCGI())
         {

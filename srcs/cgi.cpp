@@ -16,9 +16,7 @@ void    Client::cgiProcess(std::string tmpFile)
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
         return ;
-    // if (dup2(fd, STDERR_FILENO) == -1)
-    //     exit(1);
-    std::cerr << "hello";   
+    dup2(Tools::fdError, STDERR_FILENO);
     execve(path[0], path, env);
     return ;
 }
@@ -37,6 +35,7 @@ bool    Client::serverProcess()
         {
             request->setLogDetails("Bad Gateway");
             _statusCode = BAD_GATEWAY;
+            parseCgiFile();
         }
     }
     else if (result == 0)
@@ -56,8 +55,8 @@ bool    Client::serverProcess()
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
     if (this->isPost())
         remove(this->request->getFileName().c_str());
-   // if (response->getStatus() == CGI_ERROR)
-       // remove(this->response->getFile().c_str());
+    if (response->getStatus() == CGI_ERROR)
+        remove(this->response->getFile().c_str());
     return (1);
 }
 
@@ -99,13 +98,14 @@ void    Client::parseCgiFile()
     size_t          strLen;
     size_t          lenHeader = 0;
     short int       code;
+
+
     infile.open(response->getFile().c_str());
     if (!infile.is_open())
     {
         response->setStatus(CGI_ERROR);
         request->setLogDetails("can't open output file of cgi");
         _statusCode = INTERNAL_SERVER_ERROR;
-        buildErrorPage();
         return ;
     }
     _statusCode = SUCCESS;
@@ -135,17 +135,15 @@ void    Client::parseCgiFile()
                     if (code >=400 && code <= 599)
                     {
                         response->setStatus(CGI_ERROR);
-                        std::cout << "here\n";
+                        return ;
                     }
-                std::cout << "code" << code << std::endl;
                 }
                 iss.clear();
              }
             else
                 break;
         }
-            continue;
-        break;
+        continue;
     }
     infile.close();
 	return ;
@@ -154,7 +152,7 @@ void    Client::parseCgiFile()
 
 bool    Client::handleCGI()
 {
-    if (response->getStatus() == CGI_FILE || response->getStatus() == CGI_ERROR)
+    if (response->getStatus() == CGI_FILE)
         parseCgiFile();
     if (response->getStatus() == CGI_ERROR)
     {

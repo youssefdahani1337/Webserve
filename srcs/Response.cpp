@@ -25,17 +25,15 @@ Response& Response::operator=(const Response& re)
 
 std::string			Response::getFile() const  { return (this->_fileName); }
 int					Response::getStatus() const { return (this->status); }
+const std::string&	Response::getLogDetails(void)  const  { return (logDetails); }
 
 void				Response::setFileSize(size_t size) { _fileSize = size; }
 void				Response::setFile(std::string file) { this->_fileName = file; }
 void				Response::setFd(int fd){this->fd = fd;}
 void				Response::setStatus(enum Status e) { this->status = e; }
+void				Response::setLogDetails(std::string str) { logDetails = str; }
+void				Response::closeFd() { if (fd != -1) close(fd);}
 
-void				Response::closeFd()
-{
-	if (fd != -1)
-		close(fd);
-}
 void				Response::setheaderCgi(bool val, size_t lenHeader)
 {
 	_headerCgi = val;
@@ -111,6 +109,7 @@ bool	Response::openFile()
 	if (fd == -1)
 	{
 		status = STREAM_FILE;
+		logDetails = "Can't open file in generating response";
 		generatePage(FORBIDDEN);
 		return (false);
 	}
@@ -231,8 +230,7 @@ std::string Response::getChunk(bool & endResponse)
 	{
 		delete[] buffer;
 		endResponse = false;
-		// close(fd
-				return ("0\r\n\r\n\0");
+		return ("0\r\n\r\n\0");
 	}
 	buffer[len] = 0;
 	

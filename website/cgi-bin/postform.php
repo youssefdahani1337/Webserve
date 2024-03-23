@@ -22,22 +22,22 @@
     <div class="cgi">
 	<div >
 		<form action="postform.php" method="post" class="calculator">
-			<input type="number" name="num1" pla0ceholder="Enter first number" required><br>
-			<input type="number" name="num2" placeholder="Enter second number" required><br>
-			<select name="operator">
-				<option value="add">Addition (+)</option>
-				<option value="subtract">Subtraction (-)</option>
-				<option value="multiply">Multiplication (*)</option>
-				<option value="divide">Division (/)</option>
-			</select><br>
+			<input type="text" name="fname" placeholder="Enter Your Firstname" required><br>
+			<input type="text" name="lname" placeholder="Enter  Your Latsname" required><br>
+			<br>
 			<button type="submit">Calculate</button>
 		</form>
 		<?php
-	if (isset($_POST['num1']) && isset($_POST['num2']))
-    {
-        echo $POST["num1"] . " " .$_POST["num2"] . "<br>";   
+	if (isset($_POST['fname']) && isset($_POST['lname']))
+    { ?>
+	<div class="calculator">
+	
+<?php
+    
+	echo "Your name is ".$_POST["fname"] . " " .$_POST["lname"] . "<br>";   
     }
 ?>
-
+</div>
+</div>
 </body>
 </html>
