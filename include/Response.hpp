@@ -16,7 +16,7 @@ private:
 	int					fd;
 	bool				_headerCgi ;
 	size_t				_lenHeader;
-
+	std::string			logDetails;
 public:
 
 	Response();
@@ -30,6 +30,7 @@ public:
 	void			setFileSize(size_t);
 	void			setFile(std::string);
 	void			setFd(int);
+	void			setLogDetails(std::string);
 	void			closeFd();
 
 	void			setStatus(enum Status e);
@@ -40,12 +41,12 @@ public:
 	void			generatePage(int );
 	void			handleRedir(int , std::string );
 
-	void			generateRequestline();
-	void			generateHeaders();
-	void			generateResponse(short int statusCode);
-	void			makeChunked();
-	std::string 	getChunk(bool & endResponse);
-
+	void				generateRequestline();
+	void				generateHeaders();
+	void				generateResponse(short int statusCode);
+	void				makeChunked();
+	std::string 		getChunk(bool & endResponse);
+	const std::string&	getLogDetails(void) const;
 	//debug
 	void	printresponse();
 };

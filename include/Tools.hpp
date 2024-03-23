@@ -20,7 +20,9 @@ public:
 	static long						identity;
 	static mapStrStr                _types;
 	static std::ofstream			logFile;
+	static int						fdError;
 	
+	static bool			openServerFiles();
 	static std::string  intTOstr(int );
 	static std::string  getBodyBegin(std::string );
 	static std::string  getBodyEnd(void);

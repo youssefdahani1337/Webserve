@@ -82,7 +82,7 @@ int Request::parseChunked(long long clientMaxBodySize)
                 parseHexa();
             else 
             {
-                if ((status = writeChunkedContent(clientMaxBodySize) != 1))
+                if ((status = writeChunkedContent(clientMaxBodySize)) != 1)
                     return (status);
                 if (contentLength == 0 && (status = parseChunkedContent()) != 1)
                     return (status);
@@ -113,7 +113,7 @@ int Request::addToFile(long long clientMaxBodySize)
             endRequest = true;
         setBody("");
     }
-    else if (chunked && (status = parseChunked(clientMaxBodySize) != 1))
+    else if (chunked && (status = parseChunked(clientMaxBodySize)) != 1)
         return (status);
     return (1);
 }
@@ -135,7 +135,7 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
     else
         return (logDetails = "don't know how to process the body, we don't have a contentLength and its not chunked", BAD_REQUEST);
     if ((!contentLength && !getBody().length()) || (chunked && getBody().length() == 5) )
-        return (0);
+        return (BAD_REQUEST);
     else if (!contentLength && getBody().length() && !chunked)
         return (logDetails = "contentLength is different than the body size", BAD_REQUEST);
     if (contentLength > clientMaxBodySize)
@@ -170,12 +170,12 @@ int Client::initPost()
         else
             return(request ->setLogDetails("we don't have access to the upload path"), FORBIDDEN);
     }
-    else // this part means CGI.
+    else
     {
         if (_location -> getCGI())
         {
             _cgiResponse = true;
-            std::string pathToTmp = "./tmp";
+            std::string pathToTmp = TMPDIR;
             Tools::checkIfPathValid(pathToTmp);
             if ((status = request -> initFile(pathToTmp, _server -> getMaxBodySize(), _cgiResponse)) != 1)
                 return (status);
@@ -203,7 +203,7 @@ int Client::PostHandler()
             Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
         }
     }
-    if ((status = request -> addToFile(_server -> getMaxBodySize()) != 1))
+    if ((status = request -> addToFile(_server -> getMaxBodySize())) != 1)
         return (std::remove(request -> getFileName().c_str()),
             Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
     if (request -> getEndRequest())

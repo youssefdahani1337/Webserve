@@ -6,9 +6,12 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-        if (isPost())
+    }
+    if (isPost())
+    {
+        if (_cgiResponse)
         {
-            request->setLogDetails("is not a cgi file");
+            response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
             buildErrorPage();
         }
@@ -20,7 +23,7 @@ void    Client::buildErrorPage()
     response->setFile(_server->getFileError(_statusCode));
     if (response->getFile().empty() || !response->checkReading())
     {
-        response->generatePage(_statusCode);//STREAM
+        response->generatePage(_statusCode);
         return ;
     }
     response->setStatus(READING_FILE);
@@ -41,7 +44,7 @@ void    Client::handleAutoIndex()
     {
         response->setStatus(ERROR);
         _statusCode = INTERNAL_SERVER_ERROR;
-        request->setLogDetails("listing dir");
+        response->setLogDetails("listing dir");
         return ;
     }
     _statusCode = SUCCESS;
@@ -54,7 +57,7 @@ void    Client::handleDirectory()
     {
         if (!response->checkReading())
         {
-            request->setLogDetails("Reading permission index file");
+            response->setLogDetails("Reading permission index file");
             _statusCode = FORBIDDEN;
         }
         else
@@ -64,7 +67,7 @@ void    Client::handleDirectory()
         handleAutoIndex();
     else
     {
-        request->setLogDetails("No index , no auto_index");
+        response->setLogDetails("No index , no auto_index");
         response->setStatus(ERROR);
         _statusCode = FORBIDDEN;
     }
@@ -75,14 +78,15 @@ void       Client::checkResource()
     struct stat st;
     std::string res;
     
-    _statusCode = SUCCESS;
+    if (!isPost())
+        _statusCode = SUCCESS;
 
     if (stat(_path.c_str(), &st) == 0)
     {     
         if (!(st.st_mode & S_IRUSR))
         {
             _statusCode = FORBIDDEN;
-            request->setLogDetails("Right of reading file or dir in Res func");
+            response->setLogDetails("Right of reading file or dir in Res func");
             response->setStatus(ERROR);
             return ;
         }
@@ -107,9 +111,8 @@ void       Client::checkResource()
             response->setFileSize(st.st_size);
             return ;
         }
-      
     }
-    request->setLogDetails("Resource not found in root path");
+    response->setLogDetails("Resource not found in root path");
     _statusCode = NOT_FOUND;
     response->setStatus(ERROR);
 }
@@ -117,7 +120,6 @@ void       Client::checkResource()
 bool      Client::handleResponse()
 {
 
-    response->setStatus(begin_RES);
     if (_server == NULL)
         _server =*_servers->begin();
         
@@ -135,7 +137,7 @@ bool      Client::handleResponse()
 
     if (response->getStatus() == REDIR)
     {
-       handleRedir();
+        handleRedir();
         return (false) ;
     }
     if (response->getStatus() == DIRECTORY)

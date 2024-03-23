@@ -24,7 +24,6 @@ Request::~Request() {}
 
 /*End*/
 
-
 /* Start GEtters and setters*/
 
 std::string			Request::getResource(void)  { return (this->_resource); }

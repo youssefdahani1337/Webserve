@@ -20,6 +20,7 @@ void    Client::cgiProcess(std::string tmpFile)
     stat( Tools::realPath(response->getFile()).c_str(), &st);
     if (!(st.st_mode & S_IXUSR))
         return ;
+    dup2(Tools::fdError, STDERR_FILENO);
     execve(path[0], path, env);
     return ;
 }
@@ -38,6 +39,7 @@ bool    Client::serverProcess()
         {
             request->setLogDetails("Bad Gateway");
             _statusCode = BAD_GATEWAY;
+            parseCgiFile();
         }
     }
     else if (result == 0)
@@ -99,6 +101,8 @@ void    Client::parseCgiFile()
     size_t          len = 0;
     size_t          strLen;
     size_t          lenHeader = 0;
+    short int       code;
+
 
     infile.open(response->getFile().c_str());
     if (!infile.is_open())
@@ -128,16 +132,22 @@ void    Client::parseCgiFile()
             {
                 tmpLine = Tools::toUpper(tmpLine);
                 iss >>  std::ws;
-                iss >> str;
-                if (tmpLine == "status")
-                    _statusCode = strtol(str.c_str(), NULL, 10);
+                iss >> code;
+                if (tmpLine == "status" && !iss.fail())
+                {
+                    _statusCode = code;
+                    if (code >=400 && code <= 599)
+                    {
+                        response->setStatus(CGI_ERROR);
+                        return ;
+                    }
+                }
                 iss.clear();
-            }
+             }
             else
                 break;
         }
-            continue;
-        break;
+        continue;
     }
     infile.close();
 	return ;

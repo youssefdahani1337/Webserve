@@ -43,6 +43,7 @@ bool Client::parseRequest()
             request->addBody(buffer);
             this->buffer.clear();
             _statusCode = PostHandler();
+            std::cout << _statusCode << std::endl;
             if (_statusCode)
                 return (this->_statusCode == NOT_YET ? NOT_YET :FINISH);
         }
@@ -60,19 +61,7 @@ bool    Client::checkPath()
 {
     char realPathLocation[PATH_MAX];
     char realPathResource[PATH_MAX];
-    size_t pos;
 
-    pos = request->getResource().rfind("/..");
-    if ( pos != std::string::npos && (pos + 3) == request->getResource().length())
-    {
-        _statusCode = BAD_REQUEST;
-        return (false); 
-    }
-    if (request->getResource().find("/../") != std::string::npos)
-    {
-        _statusCode = BAD_REQUEST;
-        return (false); 
-    }
     if (!realpath(_location->getRootPath().c_str(), realPathLocation) ||
         !realpath(_path.c_str(), realPathResource))
     {

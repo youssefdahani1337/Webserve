@@ -4,11 +4,8 @@ std::ofstream Tools::logFile;
 
 Manager::Manager(std::string &configFileName) : maxFd(0)
 {
-    std::string cmd = "mkdir -m 777 -p logs";
-    system(cmd.c_str());
-    Tools::logFile.open("logs/logFile.txt");
-    if (!Tools::logFile.is_open())
-        throw std::runtime_error("problem while creating a logfile");
+    if (!Tools::openServerFiles())
+        throw std::runtime_error("problem while creating a logfile or CGI ERROR file");
     
     Tools::setTypes();
     this->_servers = Configuration::parseConfigFile(configFileName);
