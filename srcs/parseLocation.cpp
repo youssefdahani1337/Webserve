@@ -1,81 +1,6 @@
 
 #include "../include/Location.hpp"
 
-void	Location::_copyCgiPass(std::map<std::string, std::string> cgiPassToCopy)
-{
-	std::map<std::string, std::string>::iterator	it;
-
-	it = cgiPassToCopy.begin();
-	while (it != cgiPassToCopy.end())
-	{
-		this->_cgiPass.insert(std::make_pair(it->first, it->second));
-		it ++;
-	}
-	return ;
-}
-
-void	Location::_directiveNamesFcts(void)
-{
-	this->_directiveNames[0] = "location";
-	this->_directiveNames[1] = "allow";
-	this->_directiveNames[2] = "return";
-	this->_directiveNames[3] = "root";
-	this->_directiveNames[4] = "autoindex";
-	this->_directiveNames[5] = "index";
-	this->_directiveNames[6] = "cgi";
-	this->_directiveNames[7] = "upload_path";
-	this->_directiveFcts[0] = &Location::_ressourceDirective;
-	this->_directiveFcts[1] = &Location::_allowedMethodsDirective;
-	this->_directiveFcts[2] = &Location::_redirectionDirective;
-	this->_directiveFcts[3] = &Location::_rootDirective;
-	this->_directiveFcts[4] = &Location::_autoindexDirective;
-	this->_directiveFcts[5] = &Location::_indexDirective;
-	this->_directiveFcts[6] = &Location::_cgiDirective;
-	this->_directiveFcts[7] = &Location::_uploadPathDirective;
-	return ;
-}
-
-void	Location::_keyAndValue(std::string line, std::string &key, std::string &value)
-{
-	size_t				found;
-	std::istringstream	issLine;
-	std::istringstream	issKey;
-
-	found = line.find(":");
-	issLine.str(line);
-	std::getline(issLine, key, ':');
-	issKey.str(key);
-	issKey >> key >> std::ws;
-	if ((found == std::string::npos && (key.empty() || Configuration::keySpace(key) || key == "endLocation") && issKey.eof()))
-	{
-		issLine.clear();
-		return ;
-	}
-	if (((found == std::string::npos || !issKey.eof())) || (found != std::string::npos && key.empty()))
-		throw (std::runtime_error("Error: unkown directives"));
-	issKey.clear();
-	std::getline(issLine, value);
-	if (value.empty() || Configuration::keySpace(value))
-		throw (std::runtime_error("Error: found an empty value in directive"));
-	issLine.clear();
-	return ;
-}
-
-bool	Location::_isLocationDirective(std::string &key)
-{
-	int	i;
-
-	i = -1;
-	if (key == "cgi_pass")
-		return (true);
-	while (++i < 8)
-	{
-		if (this->_directiveNames[i] == key)
-			return (true);
-	}
-	return (false);
-}
-
 void	Location::_ressourceDirective(std::string &value)
 {
 	std::istringstream	issValue(value);
@@ -100,8 +25,8 @@ void	Location::_allowedMethodsDirective(std::string &value)
 		found = false;
 		if (method != "GET" && method != "POST" && method != "DELETE")
 		{
-			std::cerr << "invalid method" << method;
-			throw (std::runtime_error("in allow directive"));
+			std::cerr << "invalid method " << method;
+			throw (std::runtime_error(" in allow directive"));
 		}
 		it = this->_allowedMethods.begin();
 		while (it != this->_allowedMethods.end())
@@ -177,18 +102,6 @@ void	Location::_indexDirective(std::string &value)
 	return ;
 }
 
-void	Location::_cgiDirective(std::string &value)
-{
-	std::istringstream	issValue(value);
-	std::string			cgi;
-
-	issValue >> cgi >> std::ws;
-	if ((cgi != "on" && cgi != "off") || !issValue.eof())
-		throw (std::runtime_error("Error: invalid parameter in the cgi directive"));
-	this->_cgi = (cgi == "on") ? true : false;
-	return ;
-}
-
 void	Location::_uploadPathDirective(std::string &value)
 {
 	std::istringstream	issValue(value);
@@ -201,17 +114,30 @@ void	Location::_uploadPathDirective(std::string &value)
 	return ;
 }
 
+void	Location::_cgiDirective(std::string &value)
+{
+	std::istringstream	issValue(value);
+	std::string			cgi;
+
+	issValue >> cgi >> std::ws;
+	if ((cgi != "on" && cgi != "off") || !issValue.eof())
+		throw (std::runtime_error("Error: invalid parameter in the cgi directive"));
+	this->_cgi = (cgi == "on") ? true : false;
+	return ;
+}
+
 void	Location::_cgiPassDirective(std::vector<std::string> cgiInfos)
 {
 	std::istringstream					issValue;
 	std::string							cgiPath;
 	std::string							cgiExt;
-	std::vector<std::string>::iterator	it;
+	std::vector<std::string>::iterator	it, ite;
 	size_t								size;
 
 	size = 0;
 	it = cgiInfos.begin();
-	while (it != cgiInfos.end())
+	ite = cgiInfos.end();
+	while (it != ite)
 	{
 		issValue.str(*it);
 		issValue >> cgiPath >> cgiExt >> std::ws;
@@ -252,6 +178,47 @@ void	Location::_fillLocationDirectives(std::map<std::string, std::string> locati
 	return ;
 }
 
+bool	Location::_isLocationDirective(std::string &key)
+{
+	int	i;
+
+	i = -1;
+	if (key == "cgi_pass")
+		return (true);
+	while (++i < 8)
+	{
+		if (this->_directiveNames[i] == key)
+			return (true);
+	}
+	return (false);
+}
+
+void	Location::_keyAndValue(std::string line, std::string &key, std::string &value)
+{
+	size_t				found;
+	std::istringstream	issLine;
+	std::istringstream	issKey;
+
+	found = line.find(":");
+	issLine.str(line);
+	std::getline(issLine, key, ':');
+	issKey.str(key);
+	issKey >> key >> std::ws;
+	if ((found == std::string::npos && (key.empty() || Configuration::keySpace(key) || key == "endLocation") && issKey.eof()))
+	{
+		issLine.clear();
+		return ;
+	}
+	if (((found == std::string::npos || !issKey.eof())) || (found != std::string::npos && key.empty()))
+		throw (std::runtime_error("Error: unkown directives"));
+	issKey.clear();
+	std::getline(issLine, value);
+	if (value.empty() || Configuration::keySpace(value))
+		throw (std::runtime_error("Error: found an empty value in directive"));
+	issLine.clear();
+	return ;
+}
+
 void	Location::_locationDirectives(std::istringstream &blockIss)
 {
 	std::string							key;
@@ -284,5 +251,26 @@ void	Location::_locationDirectives(std::istringstream &blockIss)
 	if (size == 1)
 		throw (std::runtime_error("Error: empty location"));
 	this->_fillLocationDirectives(locationDirectives, cgiInfos);
+	return ;
+}
+
+void	Location::_directiveNamesFcts(void)
+{
+	this->_directiveNames[0] = "location";
+	this->_directiveNames[1] = "allow";
+	this->_directiveNames[2] = "return";
+	this->_directiveNames[3] = "root";
+	this->_directiveNames[4] = "autoindex";
+	this->_directiveNames[5] = "index";
+	this->_directiveNames[6] = "cgi";
+	this->_directiveNames[7] = "upload_path";
+	this->_directiveFcts[0] = &Location::_ressourceDirective;
+	this->_directiveFcts[1] = &Location::_allowedMethodsDirective;
+	this->_directiveFcts[2] = &Location::_redirectionDirective;
+	this->_directiveFcts[3] = &Location::_rootDirective;
+	this->_directiveFcts[4] = &Location::_autoindexDirective;
+	this->_directiveFcts[5] = &Location::_indexDirective;
+	this->_directiveFcts[6] = &Location::_cgiDirective;
+	this->_directiveFcts[7] = &Location::_uploadPathDirective;
 	return ;
 }

@@ -2,7 +2,7 @@
 
 Server::Server(std::string &serverBlock, std::vector<std::string> &locations)
 {
-	std::vector<std::string>::iterator	it;
+	std::vector<std::string>::iterator	it, ite;
 	std::istringstream					issBlock;
 	Location							*createLocation;
 
@@ -11,13 +11,14 @@ Server::Server(std::string &serverBlock, std::vector<std::string> &locations)
 	this->_serverDirectives(issBlock);
 	issBlock.clear();
 	it = locations.begin();
+	ite = locations.end();
 	try
 	{
-		while (it != locations.end())
+		while (it != ite)
 		{
 			createLocation = new Location(*it);
-			this->_checkDuplicateLocation(createLocation->getRessource());
 			(this->_locations).push_back(createLocation);
+			this->_checkDuplicateLocation(createLocation->getRessource());
 			it++;
 		}
 	}
@@ -48,11 +49,12 @@ Server::Server(Server const &_)
 template <typename T>
 std::vector<T>	Server::_copyVec(std::vector<T> src)
 {
-	typename std::vector<T>::iterator	it;
+	typename std::vector<T>::iterator	it, ite;
 	std::vector<T>						copy;
 
 	it = src.begin();
-	while (it != src.end())
+	ite = src.end();
+	while (it != ite)
 	{
 		copy.push_back(*it);
 		it ++;

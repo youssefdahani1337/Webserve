@@ -2,8 +2,9 @@
 
 void    Client::cgiProcess(std::string tmpFile)
 {
-    char    *path[3];
-    char    **env;
+    char        *path[3];
+    char        **env;
+    struct stat st;
 
     env     = this->FillEnv();
     path[0] = strdup(this->_cgiPath.c_str());
@@ -16,8 +17,9 @@ void    Client::cgiProcess(std::string tmpFile)
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
         return ;
-    // if (dup2(fd, STDERR_FILENO) == -1)
-    //     exit(1);
+    stat( Tools::realPath(response->getFile()).c_str(), &st);
+    if (!(st.st_mode & S_IXUSR))
+        return ;
     execve(path[0], path, env);
     return ;
 }

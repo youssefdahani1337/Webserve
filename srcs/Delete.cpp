@@ -21,7 +21,8 @@ int	Client::DeleteDirectory(std::string dirPath)
 		if (entryName == "." || entryName == "..")
 			continue ;
 		entryPath = dirPath + '/' + EntryInfos->d_name;
-		stat(entryPath.c_str(), &infos);
+		if (stat(entryPath.c_str(), &infos) == -1)
+			return (INTERNAL_SERVER_ERROR);
 		if (!(infos.st_mode & S_IWUSR))
 			return (FORBIDDEN);
 		if (S_ISDIR(infos.st_mode))
