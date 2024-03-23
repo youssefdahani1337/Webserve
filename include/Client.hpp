@@ -49,8 +49,6 @@ private:
     void                handleRedir();
     bool                handleCGI();
 
-    void                handleGetyDelete();
-    void                handlePost();
 
     bool                checkCGI();
     void                cgiProcess(std::string tmpFile);
@@ -63,6 +61,8 @@ private:
     bool                isMethodAllowed();
 	int					DeleteDirectory(std::string dirPath);//
     bool                checkAndgenerate();
+    std::string         sendHeadError();
+
 
 public:
 

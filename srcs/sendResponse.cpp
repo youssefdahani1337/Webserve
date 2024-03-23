@@ -1,5 +1,12 @@
 #include "../include/Client.hpp"
 
+std::string Client::sendHeadError()
+{
+    std::string str;
+
+    str.assign()
+}
+
 bool    Client::checkAndgenerate()
 {
     if (response->getStatus() == CGI_RUNNING && !serverProcess())
@@ -25,6 +32,7 @@ bool        Client::sendResponse()
         return (true);
     if (outOfTimeSend())
         return(false);
+    
     msg = response->getChunk(endresponse);
     fcntl(_fdClient, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
     if (-1 == write(_fdClient, msg.c_str(), msg.length()))
