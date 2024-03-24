@@ -10,6 +10,7 @@ void    Client::cgiProcess(std::string tmpFile)
     path[0] = strdup(this->_cgiPath.c_str());
     path[1] = strdup(Tools::realPath(response->getFile()).c_str());
     path[2] = NULL;
+
     if (isPost())
     {
         if (!freopen(this->request->getFileName().c_str(), "r", stdin))
@@ -17,12 +18,9 @@ void    Client::cgiProcess(std::string tmpFile)
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
         return ;
-    stat( Tools::realPath(response->getFile()).c_str(), &st);
+    stat(path[0], &st);
     if (!(st.st_mode & S_IXUSR))
-    {
-        std::cerr << "here\n";
         return ;
-    }
     dup2(Tools::fdError, STDERR_FILENO);
     execve(path[0], path, env);
     return ;
@@ -41,6 +39,7 @@ bool    Client::serverProcess()
         else
         {
             request->setLogDetails("Bad Gateway");
+            response->setStatus(CGI_ERROR);
             _statusCode = BAD_GATEWAY;
             parseCgiFile();
         }
@@ -51,9 +50,7 @@ bool    Client::serverProcess()
             return (0);
         if (kill(pid, SIGTERM) == -1)
             kill(pid, SIGKILL);
-        std::cout << "here\n";
         _statusCode = GATEWAY_TIMEOUT;
-        request->setLogDetails("time out in cgi");
     }
     else if (result == -1)
     {
@@ -61,10 +58,10 @@ bool    Client::serverProcess()
         request->setLogDetails("waipid failed in cgi");
     }
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
- //   if (this->isPost())
-    //    remove(this->request->getFileName().c_str());
-   // if (response->getStatus() == CGI_ERROR)
-  //      remove(this->response->getFile().c_str());
+  if (this->isPost())
+      remove(this->request->getFileName().c_str());
+  if (response->getStatus() == CGI_ERROR)
+       remove(this->response->getFile().c_str());
     return (1);
 }
 
@@ -108,6 +105,13 @@ void    Client::parseCgiFile()
     short int       code;
 
 
+    if ((isPost() && access(request->getFileName().c_str(), F_OK | R_OK) != 0) || 
+        access(response->getFile().c_str(), F_OK | W_OK))
+    {
+        _statusCode = INTERNAL_SERVER_ERROR;
+        return ;
+    }
+
     infile.open(response->getFile().c_str());
     if (!infile.is_open())
     {
@@ -116,7 +120,8 @@ void    Client::parseCgiFile()
         _statusCode = INTERNAL_SERVER_ERROR;
         return ;
     }
-    _statusCode = SUCCESS;
+    if (response->getStatus() != CGI_ERROR)
+        _statusCode = SUCCESS;
     while (std::getline(infile, line) && !infile.eof())
     {
         lenHeader += line.length() + 1;
@@ -140,17 +145,17 @@ void    Client::parseCgiFile()
                 if (tmpLine == "status" && !iss.fail())
                 {
                     _statusCode = code;
-                    if (code >=400 && code <= 599)
+                    if (code >= 400 && code <= 599)
                     {
                         response->setStatus(CGI_ERROR);
                         return ;
                     }
                 }
                 iss.clear();
-             }
+            }
         }
-            else
-                break;
+        else
+            break;
         continue;
     }
     infile.close();

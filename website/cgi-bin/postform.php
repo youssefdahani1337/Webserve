@@ -12,13 +12,13 @@
 	</head>
 	<body>
 	<div class="container">
-			<a href="./index.html" >Home</a>
-			<a href="./login.html">Login</a>
-			<a href="/cgi-bin/" class="active">little Magic</a>
-			<a href="./cookies">Cookies</a>
-			<a href="./about-us.html">About us</a>
-			<a href="./surprise.html">Surprise</a>
-	</div>
+			<a href="../index.html" >Home</a>
+			<a href="../session/">Login</a>
+			<a href="./index.html" class="active">little Magic</a>
+			<a href="../cookies/">Cookies</a>
+			<a href="../about-us.html">About us</a>
+			<a href="../surprise.html">Surprise</a>
+		</div>
     <div class="cgi">
 	<div >
 		<form action="postform.php" method="post" class="calculator">
