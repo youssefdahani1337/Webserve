@@ -145,6 +145,7 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
         if (!cgiResponse && getBody().length())
             random << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
+        std::cout << fileName << std::endl;
         file.open(fileName.c_str());
         if (file.is_open())
             fileCreated = true;
@@ -192,6 +193,8 @@ int Client::PostHandler()
 {
     int status;
 
+    std::cout << "im in post" << std::endl;
+    std::cout << request -> getBody() << std::endl;
     if (_location && _location->isRedir())
        return (_location->getRedirCode());
     if (!request -> getFileCreated())
@@ -199,12 +202,12 @@ int Client::PostHandler()
         if ((status = initPost()) != 1)
         {
             return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false,  status);
         }
     }
     if ((status = request -> addToFile(_server -> getMaxBodySize())) != 1)
         return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false, status);
     if (request -> getEndRequest())
     {
         request -> setFile();
