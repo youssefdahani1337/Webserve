@@ -26,7 +26,7 @@ void	Server::_maxBodySizeDirective(std::string &value)
 	issValue >> maxSize >> typeByte;
 	if (!issValue.eof())
 		issValue >> std::ws;
-	if (issValue.fail() || !issValue.eof() || (typeByte != 'B' && typeByte != 'M' && typeByte != 'G') || maxSize < 0)
+	if (issValue.fail() || !issValue.eof() || (typeByte != 'B' && typeByte != 'M' && typeByte != 'G'))
 		throw (std::runtime_error("Error: invalid value in client_max_body_size directive"));
 	if (typeByte == 'B')
 		this->_maxBodySize = maxSize;

@@ -56,9 +56,19 @@ bool    Response::checkReading()
 void	Response::handleRedir(int statusCode, std::string location)
 {
 	_statusCode = statusCode;
-	addHeader("Location", location);
+	
+	if ((_statusCode >= 300 && _statusCode<= 307) || _statusCode == 307 || _statusCode == 308)
+	{
+		addHeader("Location", location);
+		_body.clear();
+	}
+	else
+	{
+		addHeader("Content-Type", "text/plain");
+		addHeader("Content-Length", Tools::intTOstr(location.length()));
+	}
 	status = STREAM_FILE;
-	_body.clear();
+	_body.assign(location);
 }
 
 bool	Response::listDir(std::string uri, std::string path)

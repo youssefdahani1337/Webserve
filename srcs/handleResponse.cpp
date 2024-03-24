@@ -6,16 +6,17 @@ bool    Client::checkCGI()
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-    }
-    if (isPost())
-    {
-        if (_cgiResponse)
+    if (isPost() )
+     {
+        if (_cgiResponse && _statusCode <= 399)
         {
             response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
             buildErrorPage();
         }
+        }
     }
+
     return (false);
 }
 void    Client::buildErrorPage()
@@ -38,7 +39,7 @@ void    Client::handleRedir()
     response->handleRedir(_statusCode , location);
 }
 
-void    Client::handleAutoIndex() 
+void    Client::handleAutoIndex()
 {
     if (!response->listDir(request->getResource(), _path))
     {
@@ -52,6 +53,7 @@ void    Client::handleAutoIndex()
 
 void    Client::handleDirectory()
 {
+
     response->setFile(_location->getBestIndex(_path));
     if (!response->getFile().empty())
     {
@@ -97,7 +99,7 @@ void       Client::checkResource()
             {
                 res.append("/");
                 response->setStatus(REDIR);
-                _location->setRedir(301, res);
+                _location->setRedir(MOVED_PERMANENTLY, res);
                 return ;
             }
             response->setStatus(DIRECTORY);
@@ -119,6 +121,7 @@ void       Client::checkResource()
 
 bool      Client::handleResponse()
 {
+
 
     if (_server == NULL)
         _server =*_servers->begin();
@@ -146,5 +149,5 @@ bool      Client::handleResponse()
         buildErrorPage();
     if (checkCGI())
         runCgi();
-    return (false);    
+    return (false);
 }

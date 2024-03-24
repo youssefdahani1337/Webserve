@@ -37,8 +37,6 @@ int Request::writeChunkedContent(long long clientMaxBodySize)
     else
     {
         s1 = body.substr(i, contentLength);
-        if (contentLength < static_cast<long>(s1.length())) 
-            return (logDetails = "chunk size is different than the one i got in contentLength", BAD_REQUEST);
         i += contentLength;
         contentLength = 0;
     }
@@ -56,13 +54,8 @@ int Request::parseChunkedContent()
     foundDelimiter = body.find("\r\n", i);
     if (foundDelimiter != std::string::npos)
     {
-        if (i != foundDelimiter)
-            return (logDetails = "chunk size is different than the one i got in contentLength" ,BAD_REQUEST);
-        else
-        {
-            gotChunkSize = false;
-            i = foundDelimiter + 2;
-        }
+        gotChunkSize = false;
+        i = foundDelimiter + 2;
     }
     else
         throw "body";
@@ -105,10 +98,16 @@ int Request::addToFile(long long clientMaxBodySize)
  
     if (!chunked)
     {
-        if ((contentLength - length) < 0 || (length == 0 && contentLength))
-            return (logDetails = "contentLength is different than the body Size", BAD_REQUEST);
-        contentLength -= length;
-        file.write(body.c_str(), length);
+        if (contentLength - length < 0)
+        {
+            file.write(body.c_str(), contentLength);
+            contentLength = 0;
+        }
+        else
+        {
+           file.write(body.c_str(), length);
+           contentLength -= length;  
+        }
         if (!contentLength)
             endRequest = true;
         setBody("");
@@ -123,8 +122,12 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
     std::stringstream random;
     char                *ptr;
 
-    if (getHeaderValue("transfer-encoding") == "chunked")
+    if ((value = getHeaderValue("transfer-encoding")) != "")
+    {
+        if (value != "chunked")
+            return (logDetails = "transfer-encoding != chunked", NOT_IMPLEMENTED);
         chunked = true;
+    }
     else if ((value = getHeaderValue("content-length")) != "")
     {
         contentLength = strtod(value.c_str(), &ptr);
@@ -133,17 +136,13 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
         byte_count = contentLength;
     }
     else
-        return (logDetails = "don't know how to process the body, we don't have a contentLength and its not chunked", BAD_REQUEST);
-    if ((!contentLength && !getBody().length()) || (chunked && getBody().length() == 5) )
-        return (BAD_REQUEST);
-    else if (!contentLength && getBody().length() && !chunked)
-        return (logDetails = "contentLength is different than the body size", BAD_REQUEST);
+        return (logDetails = "we don't have a contentLength and its not chunked", LENGTH_REQUIRED);
     if (contentLength > clientMaxBodySize)
         return (logDetails = "contentLength is larger than the client Max Body size", CONTENT_TOO_LARGE);
     try
     {
         random << path << "/file" << rand() << Tools::identity++;
-        if (!cgiResponse)
+        if (!cgiResponse && getBody().length())
             random << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
         file.open(fileName.c_str());
@@ -200,12 +199,12 @@ int Client::PostHandler()
         if ((status = initPost()) != 1)
         {
             return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false,  status);
         }
     }
     if ((status = request -> addToFile(_server -> getMaxBodySize())) != 1)
         return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false, status);
     if (request -> getEndRequest())
     {
         request -> setFile();

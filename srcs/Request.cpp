@@ -92,10 +92,11 @@ bool Request::parseUri(int & code)
 
 bool	Request::uri_decode()
 {
-	std::ostringstream iss;
+	std::ostringstream	iss;
 	char 				str[3] = {0};
 	char 				c;
-	int 				v;	
+	int 				v;
+	
 	for (size_t i = 0; i < _resource.length(); i++)
 	{
 		c = _resource.at(i); 
@@ -111,10 +112,7 @@ bool	Request::uri_decode()
 				i += 2;
 			}
 			else
-			{
-				logDetails = "Uri decode";
-				return (false);
-			}
+				return (logDetails = "Uri decode", false);
 		}
 		else
 			iss << c;
@@ -122,6 +120,7 @@ bool	Request::uri_decode()
 	_resource = iss.str();
 	return (true);
 }
+
 int Request::parseRequestLine(std::string & buffer, ParseReq_St & requestLine)
 {
 	std::istringstream inputStr(buffer);
