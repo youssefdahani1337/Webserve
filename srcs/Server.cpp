@@ -28,8 +28,6 @@ Server::Server(std::string &serverBlock, std::vector<std::string> &locations)
 			delete (this->_locations[i]);
 		throw ;
 	}
-	if (this->_locations.empty())
-		throw (std::runtime_error("Error: Locations missing in a server block"));
 	return ;
 }
 

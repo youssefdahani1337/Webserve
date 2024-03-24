@@ -59,7 +59,8 @@ private:
     char                **FillEnv();
     void                buildErrorPage();
     bool                isMethodAllowed();
-	int					DeleteDirectory(std::string dirPath);//
+	int					DeleteDirectory(std::string dirPath);
+    void	            dirContent(DIR *dir, std::string dirPath, int &status);
     bool                checkAndgenerate();
     void                sendHeadError();
 
