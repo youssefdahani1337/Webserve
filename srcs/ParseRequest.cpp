@@ -43,7 +43,6 @@ bool Client::parseRequest()
             request->addBody(buffer);
             this->buffer.clear();
             _statusCode = PostHandler();
-            std::cout << _statusCode << std::endl;
             if (_statusCode)
                 return (this->_statusCode == NOT_YET ? NOT_YET :FINISH);
         }
@@ -73,6 +72,7 @@ bool    Client::checkPath()
         _statusCode = BAD_REQUEST;
         return (false); 
     }
+    _path.assign(realPathResource);
     return(true);
 }
 bool Client::getResPath()
@@ -84,7 +84,6 @@ bool Client::getResPath()
         _statusCode = BAD_REQUEST;
         return (false);
     }
-  
     if ((_location = _server->getMatchLocation(request->getResource(), _path)) == NULL)
     {
         _statusCode = NOT_FOUND;
