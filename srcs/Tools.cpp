@@ -94,9 +94,10 @@ void Tools::setTypes()
 
 std::string  Tools::findExtension(std::string contentType)
 {
-   if (contentType.find("multipart/form-data") != std::string::npos)
-       throw BAD_REQUEST;
-
+	if(contentType == "")
+		return(".txt");
+   	else if (contentType.find("multipart/form-data") != std::string::npos)
+       throw NOT_IMPLEMENTED;
 	mapStrStr::iterator it, itend;
 
 	it = _types.begin();
@@ -108,7 +109,7 @@ std::string  Tools::findExtension(std::string contentType)
 			return ("." + it->first);
 		it ++;	
 	}
-    return (throw BAD_REQUEST, "");
+    return (throw UNSUPPORTED_MEDIA_TYPE, "");
 }
 
 std::string Tools::getMimeType(const std::string & filename)

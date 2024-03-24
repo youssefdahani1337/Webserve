@@ -59,6 +59,7 @@
   "files.associations": {
     "iosfwd": "cpp",
     "stdexcept": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "fstream": "cpp"
   }
 }
