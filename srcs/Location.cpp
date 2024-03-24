@@ -24,9 +24,23 @@ Location::Location(Location const &_)
 	return ;
 }
 
+void	Location::_copyCgiPass(std::map<std::string, std::string> cgiPassToCopy)
+{
+	std::map<std::string, std::string>::iterator	it, ite;
+
+	it = cgiPassToCopy.begin();
+	ite = cgiPassToCopy.end();
+	while (it != ite)
+	{
+		this->_cgiPass.insert(std::make_pair(it->first, it->second));
+		it ++;
+	}
+	return ;
+}
+
 Location& Location::operator=(Location const &other)
 {
-	std::vector<std::string>::iterator	vecIt;
+	std::vector<std::string>::iterator	vecIt, vecIte;
 	std::vector<std::string>			otherAllowedMethods;
 
 	if (this == &other)
@@ -34,7 +48,8 @@ Location& Location::operator=(Location const &other)
 	this->_ressource = other._ressource;
 	otherAllowedMethods = other._allowedMethods;
 	vecIt = otherAllowedMethods.begin();
-	while (vecIt != otherAllowedMethods.end())
+	vecIte = otherAllowedMethods.end();
+	while (vecIt != vecIte)
 	{
 		this->_allowedMethods.push_back(*vecIt);
 		vecIt++;

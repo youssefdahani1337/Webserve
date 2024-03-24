@@ -3,7 +3,6 @@
 int	main(int argc, char **argv)
 {
 	std::string				configFileName;
-	std::vector<Server *>	servers;
 
 	if (argc != 1 && argc != 2)
 		std::cerr << "Error: args" << std::endl;

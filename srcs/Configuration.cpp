@@ -1,94 +1,6 @@
  
 #include "../include/Configuration.hpp"
 
-bool	Configuration::keySpace(std::string &key)
-{
-	size_t	i;
-
-	i = 0;
-	while (isspace(key[i]))
-		i++;
-	key = &key[i];
-	return (key.empty() ? true : false);
-}
-
-std::string	Configuration::blockString(std::string &source, char const *findBeg, char const *findEnd)
-{
-	size_t		endBlockPoints[2];
-	std::string	endBlockString;
-	std::string	blockStr;
-	std::string	endingStr(findEnd);
-
-	endBlockPoints[0] = source.find(findBeg);
-	if (endBlockPoints[0] == std::string::npos)
-		return (blockStr);
-	endBlockPoints[1] = source.find(findEnd, endBlockPoints[0]);
-	if (endBlockPoints[1] == std::string::npos)
-		throw (std::runtime_error("Error: ending block string not found"));
-	blockStr = source.substr(endBlockPoints[0], endBlockPoints[1] + endingStr.length() - endBlockPoints[0]);
-	source.erase(source.begin() + endBlockPoints[0], source.begin() + endBlockPoints[1] + endingStr.length());
-	return (blockStr);
-}
-
-Server	*Configuration::serverBlockParsing(std::string &serverBlock)
-{
-	std::string					locationString;
-	std::vector<std::string >	locationsBlocks;
-	Server						*server = NULL;
-
-	while (1)
-	{
-		locationString = Configuration::blockString(serverBlock, "location", "endLocation");
-		if (locationString.empty())
-			break ;
-		locationsBlocks.push_back(locationString);
-	}
-	if (!locationsBlocks.size())
-		throw ("Error: Locations missing in a server block");
-	server = new Server(serverBlock, locationsBlocks);
-	return (server);
-}
-
-void	Configuration::eraseComments(std::string &configFile)
-{
-	size_t	commentFound;
-	size_t	endComment;
-
-	while (1)
-	{
-		commentFound = configFile.find("#");
-		if (commentFound == std::string::npos)
-			break ;
-		endComment = configFile.find("\n", commentFound);
-		if (endComment == std::string::npos)
-		{
-			configFile.erase(configFile.begin() + commentFound,configFile.end());
-			return ;
-		}
-		configFile.erase(configFile.begin() + commentFound, configFile.begin() + endComment + 1);
-	}
-	return ;
-}
-
-void	Configuration::checkRemaining(std::string  &configFile)
-{
-	std::istringstream		configFileIss;
-	std::istringstream		issLine;
-	std::string				value;
-
-	configFileIss.str(configFile);
-	while (std::getline(configFileIss, value))
-	{
-		issLine.str(value);
-		issLine >> value;
-		Configuration::keySpace(value);
-		if (!value.empty())
-			throw (std::runtime_error("Error: unknown directives"));
-		issLine.clear();
-	}
-	return ;
-}
-
 void	Configuration::deleteServVec(std::vector<Server *> &servVec)
 {
 	size_t	size;
@@ -103,12 +15,16 @@ void	Configuration::duplicateServersNames(std::vector<std::string> serverNames1,
 {
 	std::vector<std::string>::iterator	iti;
 	std::vector<std::string>::iterator	itj;
+	std::vector<std::string>::iterator	itie;
+	std::vector<std::string>::iterator	itje;
 
 	iti = serverNames1.begin();
-	while (iti != serverNames1.end())
+	itie = serverNames1.end();
+	itje = serverNames2.end();
+	while (iti != itie)
 	{
 		itj = serverNames2.begin();
-		while (itj != serverNames2.end())
+		while (itj != itje)
 		{
 			if (*iti == *itj)
 			{
@@ -153,10 +69,111 @@ void	Configuration::getServersSameHostPort(std::vector<Server *> &servers, std::
 	return ;
 }
 
+bool	Configuration::keySpace(std::string &key)
+{
+	size_t	i;
+
+	i = 0;
+	while (isspace(key[i]))
+		i++;
+	key = &key[i];
+	return (key.empty() ? true : false);
+}
+
+void	Configuration::checkRemaining(std::string  &configFile)
+{
+	std::istringstream		configFileIss;
+	std::string				line;
+
+	configFileIss.str(configFile);
+	while (std::getline(configFileIss, line))
+	{
+		Configuration::keySpace(line);
+		if (!line.empty())
+			throw (std::runtime_error("Error: unknown directive"));
+	}
+	return ;
+}
+
+Server	*Configuration::serverBlockParsing(std::string &serverBlock)
+{
+	std::string					locationString;
+	std::vector<std::string >	locationsBlocks;
+	Server						*server = NULL;
+
+	while (1)
+	{
+		locationString = Configuration::blockString(serverBlock, "location", "endLocation");
+		if (locationString.empty())
+			break ;
+		locationsBlocks.push_back(locationString);
+	}
+	if (!locationsBlocks.size())
+		throw (std::runtime_error("Error: Locations missing in a server block"));
+	server = new Server(serverBlock, locationsBlocks);
+	return (server);
+}
+
+std::string	Configuration::blockString(std::string &source, char const *begStr, char const *endStr)
+{
+	size_t		endBlockPoints[2];
+	std::string	blockStr;
+	std::string	endingStr(endStr);
+
+	endBlockPoints[0] = source.find(begStr);
+	if (endBlockPoints[0] == std::string::npos)
+		return (blockStr);
+	endBlockPoints[1] = source.find(endStr, endBlockPoints[0]);
+	if (endBlockPoints[1] == std::string::npos)
+		throw (std::runtime_error("Error: ending block string not found"));
+	blockStr = source.substr(endBlockPoints[0], endBlockPoints[1] + endingStr.length() - endBlockPoints[0]);
+	source.erase(source.begin() + endBlockPoints[0], source.begin() + endBlockPoints[1] + endingStr.length());
+	return (blockStr);
+}
+
+void	Configuration::eraseComments(std::string &configFile)
+{
+	size_t	commentFound;
+	size_t	endComment;
+
+	commentFound = 0;
+	while (1)
+	{
+		commentFound = configFile.find("#", commentFound);
+		if (commentFound == std::string::npos)
+			break ;
+		endComment = configFile.find("\n", commentFound);
+		if (endComment == std::string::npos)
+		{
+			configFile.erase(configFile.begin() + commentFound,configFile.end());
+			return ;
+		}
+		configFile.erase(configFile.begin() + commentFound, configFile.begin() + endComment + 1);
+	}
+	return ;
+}
+
+void	Configuration::serversCreate(std::string &configFile, std::vector<Server *> &servers)
+{
+	std::string	serverString;
+
+	while (1)
+	{
+		serverString = Configuration::blockString(configFile, "server", "endServer");
+		if (serverString.empty())
+			break ;
+		if (servers.size() == MAX_SERVERS)
+			throw (std::runtime_error("Error: exceeded the maximum numbers of servers."));
+		servers.push_back(Configuration::serverBlockParsing(serverString));
+	}
+	if (servers.empty())
+		throw (std::runtime_error("Error: no server found"));
+	return ;
+}
+
 std::map<int, std::vector<Server *> >	Configuration::parseConfigFile(std::string &configFileName)
 {
 	std::string				configFileString;
-	std::string				serverString;
 	std::stringstream		Buffer;
 	std::vector<Server *>	servers;
 	std::ifstream			configFile;
@@ -170,17 +187,7 @@ std::map<int, std::vector<Server *> >	Configuration::parseConfigFile(std::string
 	Configuration::eraseComments(configFileString);
 	try
 	{
-		while (1)
-		{
-			serverString = Configuration::blockString(configFileString, "server", "endServer");
-			if (serverString.empty())
-				break ;
-			if (servers.size() == MAX_SERVERS)
-				throw (std::runtime_error("Error: exceeded the maximum numbers of servers."));
-			servers.push_back(Configuration::serverBlockParsing(serverString));
-		}
-		if (servers.empty())
-			throw (std::runtime_error("Error: no server found"));
+		Configuration::serversCreate(configFileString, servers);
 		Configuration::checkRemaining(configFileString);
 		Configuration::getServersSameHostPort(servers, serversMap);
 	}
