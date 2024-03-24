@@ -58,8 +58,6 @@ bool    Client::outOfTimeRead()
     {
         _statusCode = REQUEST_TIMEOUT;
         request->setFile();
-        if (response->getStatus() == CGI_FILE)
-            remove(request->getFileName().c_str());
         remove(request->getFileName().c_str());
         Tools::updateLogFile(_statusCode,request->getMethod(), _server, "While reading request");
         return (true);

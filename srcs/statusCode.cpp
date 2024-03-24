@@ -191,7 +191,7 @@ std::string Tools::messageCode(int _statusCode)
         return("Network Authentication Required");
         break;
     default:
-        return("Unknown status code");
+        return("");
         break;
 	}
 }

@@ -2,6 +2,7 @@
 
 bool    Client::checkCGI()
 {
+    std::cout << ">>>" << request->getMethod() << std::endl;
     if (response->getStatus() == READING_FILE)
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
@@ -38,7 +39,7 @@ void    Client::handleRedir()
     response->handleRedir(_statusCode , location);
 }
 
-void    Client::handleAutoIndex() 
+void    Client::handleAutoIndex()
 {
     if (!response->listDir(request->getResource(), _path))
     {
@@ -55,6 +56,7 @@ void    Client::handleDirectory()
     response->setFile(_location->getBestIndex(_path));
     if (!response->getFile().empty())
     {
+        std::cout << response->getFile() << "<< hello"<< std::endl;
         if (!response->checkReading())
         {
             response->setLogDetails("Reading permission index file");
@@ -64,7 +66,10 @@ void    Client::handleDirectory()
             response->setStatus(READING_FILE);
     }
     else if (_location->getAutoIndex() && !isPost())
+    {
+        std::cout << request->getMethod() << "<<<\n";
         handleAutoIndex();
+    }
     else
     {
         response->setLogDetails("No index , no auto_index");
@@ -97,7 +102,7 @@ void       Client::checkResource()
             {
                 res.append("/");
                 response->setStatus(REDIR);
-                _location->setRedir(301, res);
+                _location->setRedir(MOVED_PERMANENTLY, res);
                 return ;
             }
             response->setStatus(DIRECTORY);
@@ -141,7 +146,10 @@ bool      Client::handleResponse()
         return (false) ;
     }
     if (response->getStatus() == DIRECTORY)
+    {
+        std::cout << "here\n";
         handleDirectory();
+    }
     if (response->getStatus() == ERROR)
         buildErrorPage();
     if (checkCGI())
