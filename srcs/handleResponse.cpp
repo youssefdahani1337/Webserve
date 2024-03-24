@@ -154,5 +154,5 @@ bool      Client::handleResponse()
         buildErrorPage();
     if (checkCGI())
         runCgi();
-    return (false);    
+    return (false);
 }
