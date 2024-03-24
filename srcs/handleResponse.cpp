@@ -2,21 +2,21 @@
 
 bool    Client::checkCGI()
 {
-    std::cout << ">>>" << request->getMethod() << std::endl;
     if (response->getStatus() == READING_FILE)
     {    
         if (_location && _location->getCGI() && !(_cgiPath= _location->isCGIFile(response->getFile())).empty())
             return (true); 
-    }
-    if (isPost())
-    {
-        if (_cgiResponse)
+    if (isPost() )
+     {
+        if (_cgiResponse && _statusCode <= 399)
         {
             response->setLogDetails("is not a cgi file");
             _statusCode = FORBIDDEN;
             buildErrorPage();
         }
+        }
     }
+
     return (false);
 }
 void    Client::buildErrorPage()
@@ -53,10 +53,10 @@ void    Client::handleAutoIndex()
 
 void    Client::handleDirectory()
 {
+
     response->setFile(_location->getBestIndex(_path));
     if (!response->getFile().empty())
     {
-        std::cout << response->getFile() << "<< hello"<< std::endl;
         if (!response->checkReading())
         {
             response->setLogDetails("Reading permission index file");
@@ -66,10 +66,7 @@ void    Client::handleDirectory()
             response->setStatus(READING_FILE);
     }
     else if (_location->getAutoIndex() && !isPost())
-    {
-        std::cout << request->getMethod() << "<<<\n";
         handleAutoIndex();
-    }
     else
     {
         response->setLogDetails("No index , no auto_index");
@@ -125,6 +122,7 @@ void       Client::checkResource()
 bool      Client::handleResponse()
 {
 
+
     if (_server == NULL)
         _server =*_servers->begin();
         
@@ -146,13 +144,10 @@ bool      Client::handleResponse()
         return (false) ;
     }
     if (response->getStatus() == DIRECTORY)
-    {
-        std::cout << "here\n";
         handleDirectory();
-    }
     if (response->getStatus() == ERROR)
         buildErrorPage();
     if (checkCGI())
         runCgi();
-    return (false);    
+    return (false);
 }
