@@ -80,6 +80,7 @@ enum ParseReq_St
 #define METHOD_NOT_ALLOWED 405
 #define REQUEST_TIMEOUT 408
 #define CONFLICT		409 //
+#define LENGTH_REQUIRED 411
 
 #define CONTENT_TOO_LARGE 413
 #define URI_TOO_LONG	414

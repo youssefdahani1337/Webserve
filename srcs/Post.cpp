@@ -136,7 +136,7 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
         byte_count = contentLength;
     }
     else
-        return (logDetails = "we don't have a contentLength and its not chunked", BAD_REQUEST);
+        return (logDetails = "we don't have a contentLength and its not chunked", LENGTH_REQUIRED);
     if (contentLength > clientMaxBodySize)
         return (logDetails = "contentLength is larger than the client Max Body size", CONTENT_TOO_LARGE);
     try
@@ -145,7 +145,6 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
         if (!cgiResponse && getBody().length())
             random << Tools::findExtension(getHeaderValue("content-type"));
         fileName = random.str();
-        std::cout << fileName << std::endl;
         file.open(fileName.c_str());
         if (file.is_open())
             fileCreated = true;
@@ -193,8 +192,6 @@ int Client::PostHandler()
 {
     int status;
 
-    std::cout << "im in post" << std::endl;
-    std::cout << request -> getBody() << std::endl;
     if (_location && _location->isRedir())
        return (_location->getRedirCode());
     if (!request -> getFileCreated())

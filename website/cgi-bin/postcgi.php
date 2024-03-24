@@ -21,7 +21,7 @@
 	    <div>
 		<form action="postform.php" method="post" class="calculator">
 			<input type="text" name="fname" placeholder="Enter Your Firstname" required><br>
-			<input type="text" name="lname" placeholder="Enter  Your Latsname" required><br>
+			<input type="text" name="lname" placeholder="Enter  Your Lastname" required><br>
 			<br>
 			<button type="submit">Calculate</button>
 		</form>
