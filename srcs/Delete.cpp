@@ -1,49 +1,59 @@
 #include "../include/Client.hpp"
-#include <dirent.h>
 
-//return the status code
+void	Client::dirContent(DIR *dir, std::string dirPath, int &status)
+{
+	std::string		entryPath;
+	struct dirent	*EntryInfos;
+	struct stat		infos;
+	int				newStatus;
+	bool			statusAssigned;
+
+	statusAssigned = false;
+	newStatus = NO_CONTENT;
+	while ((EntryInfos = readdir(dir)) != NULL)
+	{
+		if (!strcmp(EntryInfos->d_name, ".") || !strcmp(EntryInfos->d_name, ".."))
+			continue ;
+		entryPath = dirPath + '/' + EntryInfos->d_name;
+		if (stat(entryPath.c_str(), &infos) == -1)
+			newStatus = INTERNAL_SERVER_ERROR;
+		else
+		{
+			if (!(infos.st_mode & S_IWUSR) || (S_ISDIR(infos.st_mode) & !(infos.st_mode & S_IRUSR)))
+				newStatus = FORBIDDEN;
+			else if (S_ISDIR(infos.st_mode))
+				newStatus = this->DeleteDirectory(entryPath);
+			else if (S_ISREG(infos.st_mode))
+			{
+				if (remove(entryPath.c_str()))
+					newStatus = INTERNAL_SERVER_ERROR;
+			}
+		}
+		if (statusAssigned == false && newStatus != NO_CONTENT)
+		{
+			status = newStatus;
+			statusAssigned = true;
+		}
+	}
+	return ;
+}
 
 int	Client::DeleteDirectory(std::string dirPath)
 {
-	struct dirent	*EntryInfos;
 	DIR				*dir;
-	std::string		entryPath;
-	struct stat		infos;
 	int				status;
-	std::string		entryName;
 
 	dir = opendir(dirPath.c_str());
 	if (dir == NULL)
 		return (INTERNAL_SERVER_ERROR);
-	while ((EntryInfos = readdir(dir)) != NULL)
+	status = NO_CONTENT;
+	this->dirContent(dir, dirPath, status);
+	if (closedir(dir) || rmdir(dirPath.c_str()))
 	{
-		entryName = EntryInfos->d_name;
-		if (entryName == "." || entryName == "..")
-			continue ;
-		entryPath = dirPath + '/' + EntryInfos->d_name;
-		if (stat(entryPath.c_str(), &infos) == -1)
+		if (status == NO_CONTENT)
 			return (INTERNAL_SERVER_ERROR);
-		if (!(infos.st_mode & S_IWUSR))
-			return (FORBIDDEN);
-		if (S_ISDIR(infos.st_mode))
-		{
-			status = this->DeleteDirectory(entryPath);
-			if (status != NO_CONTENT)
-				return (status);
-			if (rmdir(entryPath.c_str()))
-				return (INTERNAL_SERVER_ERROR);
-		}
-		else if (S_ISREG(infos.st_mode))
-		{
-			if (remove(entryPath.c_str()))
-				return (INTERNAL_SERVER_ERROR);
-		}
 	}
-	if (closedir(dir))
-		return (INTERNAL_SERVER_ERROR);
-	if (rmdir(dirPath.c_str()))
-		return (INTERNAL_SERVER_ERROR);
-	return (NO_CONTENT);
+	return (status);
 }
 
 int Client::DeleteHandler()
@@ -56,7 +66,7 @@ int Client::DeleteHandler()
 		return (Tools::updateLogFile(NOT_FOUND, request->getMethod() , this->_server, "path to delete not found"), NOT_FOUND);
 	if (!(infos.st_mode & S_IWUSR))
 		return (Tools::updateLogFile(FORBIDDEN, request->getMethod() , this->_server, "don't have permissions to delete"), FORBIDDEN);
-    if (S_ISREG(infos.st_mode))
+    if (infos.st_mode & S_IFREG)
 	{
         if (remove(this->_path.c_str()))
 			return (Tools::updateLogFile(INTERNAL_SERVER_ERROR, request->getMethod() , _server, "Error while removing file"), INTERNAL_SERVER_ERROR);
@@ -64,13 +74,13 @@ int Client::DeleteHandler()
     else if (infos.st_mode & S_IFDIR)
     {
 		uri = this->request->getResource();
-		if (uri.length() > 1 && uri.size() - 1 == '/')
+		if (*(uri.end() - 1) != '/')
 			return (Tools::updateLogFile(CONFLICT, request->getMethod() , _server, "conflict in uri"), CONFLICT);
+		if (!(infos.st_mode & S_IRUSR))
+			return (Tools::updateLogFile(FORBIDDEN, request->getMethod() , this->_server, "don't have permissions to delete directory"), FORBIDDEN);
 		status	= this->DeleteDirectory(_path);
 		if (status != NO_CONTENT)
 			return (Tools::updateLogFile(status, request->getMethod() , _server, "Error while deleting directory content"), status);
-		if (rmdir(_path.c_str()))
-			return (Tools::updateLogFile(INTERNAL_SERVER_ERROR, request->getMethod() , _server, "Error while removing directory"), INTERNAL_SERVER_ERROR);
     }
 	return (NO_CONTENT);
 }

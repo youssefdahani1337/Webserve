@@ -17,6 +17,14 @@
 			<a href="../about-us.html">About us</a>
 			<a href="../surprise.html">Surprise</a>
 		</div>
+        <div class="cgi">
+	    <div>
+		<form action="postform.php" method="post" class="calculator">
+			<input type="text" name="fname" placeholder="Enter Your Firstname" required><br>
+			<input type="text" name="lname" placeholder="Enter  Your Lastname" required><br>
+			<br>
+			<button type="submit">Calculate</button>
+		</form>
 
 <?php
 // Get the JSON data from CGI input
@@ -46,9 +54,7 @@ if ($data !== null) {
     // End HTML output
     echo "</body>\n";
     echo "</html>\n";
-} else {
-    // If JSON decoding failed, print an error message
-    echo "Error: Unable to decode JSON data.";
+
 }
 ?>
 </div>

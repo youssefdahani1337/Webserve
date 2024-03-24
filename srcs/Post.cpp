@@ -136,7 +136,7 @@ int Request::initFile(std::string &path, long long clientMaxBodySize, bool cgiRe
         byte_count = contentLength;
     }
     else
-        return (logDetails = "we don't have a contentLength and its not chunked", BAD_REQUEST);
+        return (logDetails = "we don't have a contentLength and its not chunked", LENGTH_REQUIRED);
     if (contentLength > clientMaxBodySize)
         return (logDetails = "contentLength is larger than the client Max Body size", CONTENT_TOO_LARGE);
     try
@@ -199,12 +199,12 @@ int Client::PostHandler()
         if ((status = initPost()) != 1)
         {
             return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false,  status);
         }
     }
     if ((status = request -> addToFile(_server -> getMaxBodySize())) != 1)
         return (std::remove(request -> getFileName().c_str()),
-            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), status);
+            Tools::updateLogFile(status, request -> getMethod() , _server, request -> getLogDetails()), _cgiResponse = false, status);
     if (request -> getEndRequest())
     {
         request -> setFile();

@@ -43,6 +43,7 @@ bool Client::parseRequest()
             request->addBody(buffer);
             this->buffer.clear();
             _statusCode = PostHandler();
+            std::cout << _statusCode << std::endl;
             if (_statusCode)
                 return (this->_statusCode == NOT_YET ? NOT_YET :FINISH);
         }
