@@ -59,7 +59,7 @@ bool    Client::serverProcess()
         request->setLogDetails("waipid failed in cgi");
     }
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
-  if (response->getStatus() == CGI_ERROR)
+    if (response->getStatus() == CGI_ERROR)
        remove(this->response->getFile().c_str());
     return (1);
 }
@@ -172,6 +172,11 @@ bool    Client::handleCGI()
     {
         buildErrorPage();
         return (false);
+    }
+    if (response->getStatus() == CGI_FILE || response->getStatus() == CGI_ERROR)
+    {
+          if (this->isPost() )
+            remove(this->request->getFileName().c_str());
     }
     return (true);
 }

@@ -181,6 +181,9 @@ void	Server::_fillServerDirectives(std::map<std::string, std::string> serverDire
 
 	i = -1;
 	size = 4;
+	found = serverDirectives.find(this->_directiveNames[3]);
+	if (found == serverDirectives.end())
+		this->_maxBodySize = -1;
 	while (++i < 2)
 	{
 		found = serverDirectives.find(this->_directiveNames[i]);
@@ -201,9 +204,6 @@ void	Server::_fillServerDirectives(std::map<std::string, std::string> serverDire
 	}
 	if (!errorPages.empty())
 		this->_errorPagesDirective(errorPages);
-	found = serverDirectives.find(this->_directiveNames[3]);
-	if (found == serverDirectives.end())
-		this->_maxBodySize = 500 * pow(1024, 2);
 	return ;
 }
 
