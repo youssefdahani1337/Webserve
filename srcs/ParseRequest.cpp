@@ -77,17 +77,6 @@ bool    Client::checkPath()
         return (false); 
     }
     _path.assign(realPathResource);
-    // if (!realpath(_location->getRootPath().c_str(), realPathLocation))
-    // {
-    //     _statusCode = 455;
-    //     return (false);
-    // }
-    // if (strncmp(realPathLocation, realPathResource, strlen(realPathLocation)) != 0)
-    // {
-    //     _statusCode = BAD_REQUEST;
-    //     return (false); 
-    // }
-    // _path.assign(realPathResource);
     return(true);
 }
 bool Client::getResPath()

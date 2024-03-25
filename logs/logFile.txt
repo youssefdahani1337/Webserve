@@ -1,4 +1,0 @@
-2024-03-25 15:46:11 Server<127.0.0.1::8001 GET OUTPUT <200: SUCCESS>
-2024-03-25 15:46:17 Unknown Server  Unknown Method  OUTPUT <408: While reading request>
-2024-03-25 15:46:17 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
-2024-03-25 15:46:38 Server<127.0.0.1::8001 GET OUTPUT <200: SUCCESS>

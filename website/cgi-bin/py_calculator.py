@@ -26,8 +26,8 @@ html_content = """
     <div class="cgi">
 	<div >
 		<form class="calculator" action="py_calculator.py" method="get">
-			<input type="text" name="num1" placeholder="Enter first number" required><br>
-			<input type="text" name="num2" placeholder="Enter second number" required><br>
+			<input type="number" name="num1" placeholder="Enter first number" required><br>
+			<input type="number" name="num2" placeholder="Enter second number" required><br>
 			<select name="operator">
 				<option value="add">Addition (+)</option>
 				<option value="subtract">Subtraction (-)</option>
@@ -46,6 +46,7 @@ import cgi
 form = cgi.FieldStorage()
 
 if form.getvalue('num1') and form.getvalue('num2') and form.getvalue('operator'):
+	print("HElllo")
     num1 = float(form.getvalue('num1'))
     num2 = float(form.getvalue('num2'))
     operation = form.getvalue('operator')

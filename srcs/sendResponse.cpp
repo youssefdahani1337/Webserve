@@ -45,6 +45,8 @@ bool        Client::sendResponse()
     fcntl(_fdClient, F_SETFL, O_NONBLOCK, FD_CLOEXEC);
     if (-1 == write(_fdClient, msg.c_str(), msg.length()))
     {
+         if (response->getStatus() == CGI_FILE)
+            remove(response->getFile().c_str());
         Tools::updateLogFile(0,request->getMethod() ,_server, "write fail in send");
         return (false);
     }

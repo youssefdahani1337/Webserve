@@ -24,7 +24,11 @@ $(OBJECTDIR) :
 	mkdir -p $(OBJECTDIR)
 	
 $(OBJECTDIR)%.o : ./srcs/%.cpp $(HEADERS) | $(OBJECTDIR)
-	$(CC) $(CPPFLAGS) -c $< -o $@
+	@echo "\033[0;36mCompiling $@!!!!\033[0m"
+	@printf "\033[J"
+	
+	@echo ""
+	@$(CC) $(CPPFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJECT) 
 	@$(CC) $(CPPFLAGS) $(OBJECT) -o $(NAME)
@@ -39,4 +43,4 @@ fclean : clean
 
 re : fclean all
 
-.SILENT : $(OBJECT)
+# .SILENT : $(OBJECT)

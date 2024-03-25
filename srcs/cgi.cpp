@@ -17,7 +17,7 @@ void    Client::cgiProcess(std::string tmpFile)
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
         return ;
-    if (stat(path[0], &st)!= 0 && !(st.st_mode & S_IXUSR))
+    if (stat(path[0], &st) != 0 || !(st.st_mode & S_IXUSR))
         return ;
     if (access(path[1], R_OK) == -1)
         return ;
@@ -36,10 +36,7 @@ bool    Client::serverProcess()
     if (result > 0)
     {
         if (WIFEXITED(status))
-        {
             _statusCode = SUCCESS;
-            std::cout << WEXITSTATUS(status) << std::endl;
-        }
         else
         {
             request->setLogDetails("Bad Gateway");
@@ -64,6 +61,7 @@ bool    Client::serverProcess()
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
     if (response->getStatus() == CGI_ERROR)
        remove(this->response->getFile().c_str());
+    Tools::updateLogFile(_statusCode, request->getMethod(), _server, response->getLogDetails());
     return (1);
 }
 
@@ -71,7 +69,7 @@ void    Client::runCgi()
 {
     std::string tmpFile;
 
-    tmpFile = Tools::RandomFile();
+    tmpFile = Tools::RandomFile() + Tools::intTOstr(Tools::identity ++);
     pid = fork();
     if (tmpFile.empty() || access(tmpFile.c_str(), F_OK) == 0 || pid == -1)
     {

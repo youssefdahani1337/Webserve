@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/nfs/homes/yodahani/Webserve/website/cgi-bin/py_calculator.py", line 49, in <module>
-    num1 = float(form.getvalue('num1'))
-ValueError: could not convert string to float: 'gfv'
-Traceback (most recent call last):
-  File "/nfs/homes/yodahani/Webserve/website/cgi-bin/py_calculator.py", line 49, in <module>
-    num1 = float(form.getvalue('num1'))
-ValueError: could not convert string to float: 'gfv'
