@@ -38,11 +38,10 @@ bool    Client::serverProcess()
         if (WIFEXITED(status))
         {
             _statusCode = SUCCESS;
-            std::cout << "Hello\n";
+            std::cout << WEXITSTATUS(status) << std::endl;
         }
         else
         {
-            std::cout << "Hi\n";
             request->setLogDetails("Bad Gateway");
             response->setStatus(CGI_ERROR);
             _statusCode = BAD_GATEWAY;
