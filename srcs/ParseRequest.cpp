@@ -63,17 +63,31 @@ bool    Client::checkPath()
 
     if (_location && _location->isRedir())
         return (true);
-    if (!realpath(_location->getRootPath().c_str(), realPathLocation))
+    
+    if (!realpath(_path.c_str(), realPathResource) || 
+        !realpath(_location->getRootPath().c_str(), realPathLocation))
     {
-        _statusCode = 455;
+        _statusCode = NOT_FOUND;
         return (false);
     }
-    if (strncmp(realPathLocation, realPathResource, strlen(realPathLocation)) != 0)
+    
+    if (strlen(realPathLocation) > strlen(realPathResource))
     {
         _statusCode = BAD_REQUEST;
         return (false); 
     }
     _path.assign(realPathResource);
+    // if (!realpath(_location->getRootPath().c_str(), realPathLocation))
+    // {
+    //     _statusCode = 455;
+    //     return (false);
+    // }
+    // if (strncmp(realPathLocation, realPathResource, strlen(realPathLocation)) != 0)
+    // {
+    //     _statusCode = BAD_REQUEST;
+    //     return (false); 
+    // }
+    // _path.assign(realPathResource);
     return(true);
 }
 bool Client::getResPath()
@@ -87,9 +101,10 @@ bool Client::getResPath()
     }
     if ((_location = _server->getMatchLocation(request->getResource(), _path)) == NULL)
     {
-        _statusCode = 456;
+        _statusCode = NOT_FOUND;
         return (false);
     }
+    std::cout << "path" << _path << std::endl;
     if (!checkPath())
         return (false);
     return (true);
@@ -97,11 +112,16 @@ bool Client::getResPath()
 
 std::string Client::parseHost(std::string host)
 {
+    std::string port;
     size_t pos;
+
     if (host.find("http://") == 0)
         host.erase(0, 8);
     if ((pos = host.find_last_of(':')) != std::string::npos)
+    {
+        port =  host.substr(pos, std::string::npos);
         host.erase(pos, std::string::npos);
+    }
     return (host);
 }
 
@@ -117,7 +137,6 @@ bool    Client::whichServer()
     host = parseHost(request->getHeaderValue("host"));
     while (it != itend)
     {
-
         serverTmp = (*it)->getServerNames();
         itStr = std::find(serverTmp.begin(), serverTmp.end(), host);
         if (itStr != serverTmp.end())
@@ -128,8 +147,6 @@ bool    Client::whichServer()
         it ++;
     }
     _server = *(_servers->begin());
-    if (host != _server->getIp())
-        return(false);
     return (true);
 }
 

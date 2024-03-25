@@ -1,2 +1,2 @@
-2024-03-25 03:04:08 Server<127.0.0.1::8001 GET OUTPUT <400: Check path or method not allowed>
-2024-03-25 03:04:08 Server<127.0.0.1::8001 GET OUTPUT <400: >
+2024-03-25 03:50:22 Unknown Server  Unknown Method  OUTPUT <408: While reading request>
+2024-03-25 03:50:22 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >

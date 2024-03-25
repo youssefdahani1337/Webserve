@@ -1,41 +1,37 @@
-define convert_to_objs
-$(addprefix $(1)/, $(patsubst %.c,$(2)%.o,$(notdir $(3))))
-endef
-
-
 CC= c++
 
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
 NAME = WebServ
 
-SRCS = main.cpp Configuration.cpp  Manager.cpp Server.cpp parseServer.cpp parseLocation.cpp Location.cpp Client.cpp Message.cpp Request.cpp Response.cpp Post.cpp ParseRequest.cpp handleResponse.cpp Tools.cpp Delete.cpp cgi.cpp statusCode.cpp fillEnv.cpp sendResponse.cpp
+SRC = cgi.cpp handleResponse.cpp parseLocation.cpp Response.cpp Client.cpp Location.cpp ParseRequest.cpp sendResponse.cpp \
+Configuration.cpp main.cpp parseServer.cpp Server.cpp Delete.cpp Manager.cpp Post.cpp statusCode.cpp \
+fillEnv.cpp Message.cpp Request.cpp Tools.cpp
 
-OBJDIR = builds
+SRCS = $(addprefix ./srcs/, $(SRC))
 
-OBJECT =$(call convert_to_objs , srcs, $(OBJDIR), $(SRCS)) \
+OBJECTDIR = ./builds/
 
-H = Manager.hpp Server.hpp Client.hpp Message.hpp Request.hpp Response.hpp Location.hpp Tools.hpp Macros.hpp
-HEADERS_DIR = ./include/
+OBJECT = $(addprefix $(OBJECTDIR), $(notdir $(SRCS:.cpp=.o)))
 
-HEADERS = $(H:%.hpp=$(HEADERS_DIR)%.hpp)
+H = Manager.hpp Server.hpp Client.hpp Message.hpp Request.hpp Response.hpp Location.hpp Tools.hpp Macros.hpp\
 
-all : $(NAME) 
+HEADERS = $(addprefix ./include/, $(H))
 
-$(OBJDIR):
-	@mkdir -p $(OBJDIR)
+all : $(NAME) $(OBJECTDIR)
 
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	@printf "\033c"
-	@echo "Compiling $<"
-	@$(CC) $(CPPFLAGS) -c $< -o $@
+$(OBJECTDIR) :
+	mkdir -p $(OBJECTDIR)
+	
+$(OBJECTDIR)%.o : ./srcs/%.cpp $(HEADERS) | $(OBJECTDIR)
+	$(CC) $(CPPFLAGS) -c $< -o $@
 
-$(NAME) : $(OBJECT) $(HEADERS)
-	$(CC) $(CPPFLAGS) $(OBJECT) -o $(NAME)
+$(NAME) : $(OBJECT) 
+	@$(CC) $(CPPFLAGS) $(OBJECT) -o $(NAME)
 	@echo "\033[0;35mcompiled !!!!\033[0m"
 
 clean : 
-	@rm -rf $(OBJDIR)
+	@rm -rf $(OBJECT)
 	@echo "\033[1;36mall clean\033[0m"
 	
 fclean : clean

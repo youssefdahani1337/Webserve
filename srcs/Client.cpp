@@ -26,7 +26,7 @@ bool            Client::isDelete() { return (request->getMethod() == "DELETE" ? 
 
 bool	Client::handleRequest()
 {
-    if (!outOfTimeRead() && parseRequest())
+    if (!outOfTimeRead(false) && parseRequest())
             return (true);
     if (_statusCode > 299)
         Tools::updateLogFile(_statusCode,request->getMethod(), _server, request->getLogDetails());
@@ -42,19 +42,15 @@ bool Client::outOfTimeSend()
         Tools::updateLogFile(0,request->getMethod() ,_server, "Time out in send");
         return (true);
     }
+    _firstTime = Tools::getTime();
     return (false);
 }
 
-bool    Client::outOfTimeRead()
+bool    Client::outOfTimeRead(bool out)
 {
     _lastTime = Tools::getTime();
-    if (!isPost() && MAX_TIME_OUT != 0 && (_lastTime - _firstTime) > MAX_TIME_OUT)
-    {
-        _statusCode = REQUEST_TIMEOUT;
-        Tools::updateLogFile(_statusCode,request->getMethod(), _server, "While reading request ");
-        return (true);
-    }
-    else if ((isPost() && ((TIME_OUT_UPLOAD != 0) && (_lastTime - _firstTime) > TIME_OUT_UPLOAD)))
+    
+    if ((_lastTime - _firstTime) > 5)
     {
         _statusCode = REQUEST_TIMEOUT;
         request->setFile();
@@ -62,6 +58,8 @@ bool    Client::outOfTimeRead()
         Tools::updateLogFile(_statusCode,request->getMethod(), _server, "While reading request");
         return (true);
     }
+    if (!out)
+        _firstTime =  Tools::getTime();
     return (false);
 }
 

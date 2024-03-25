@@ -116,7 +116,7 @@ void Manager::writeResponse(int i)
 
 void  Manager::checkTimeOut(const int & i)
 {
-    if (FD_ISSET(i, &currentSet) && _clients[i] &&  _clients[i]->outOfTimeRead())
+    if (FD_ISSET(i, &currentSet) && _clients[i] &&  _clients[i]->outOfTimeRead(true))
     {
         _clients[i]->setStatusCode(REQUEST_TIMEOUT);
         _clients[i]->handleResponse();
