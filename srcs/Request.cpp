@@ -221,38 +221,3 @@ int Request::parseHeader(std::string & buffer, ParseReq_St &readHeader)
 		return (BAD_REQUEST);
 	return (1);
 }
-
-/*Debuging functions */
-
-void Request::printHeaderH()
-{
-	std::map<std::string , std::string >::iterator it;
-
-	it = _headers.begin();
-	while (it != _headers.end())
-	{
-		std::cout << it->first << ":" << it->second << "\n";
-		it ++;
-	}
-}
-void Request::showRequest()
-{
-	std::cout << "Request line\n"; 
-	std::cout << "------------------------\n";
-	std::cout << this->_method << "|" << this->_resource << "|" 
-				<< this->_query <<  "|"
-				<< this->_version << "\n";
-
-	std::cout << "------------------------\n";
-	std::cout << "Headers\n"; 
-	std::cout << "------------------------\n";
-	
-	this->printHeaderH();
-
-	std::cout << "------------------------\n";
-	std::cout << "BODY\n"; 
-	std::cout << "------------------------\n";
-	std::cout << _body ;
-	std::cout << "------------------------\n";
-
-}

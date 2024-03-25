@@ -44,15 +44,3 @@ bool  Message::addHeader(std::string key, std::string value)
 {
 	return (_headers.insert(std::pair<std::string , std::string> (key, value)).second);
 }
-
-void Message::printHeader()
-{
-	std::map<std::string , std::string >::iterator it;
-
-	it = _headers.begin();
-	while (it != _headers.end())
-	{
-		std::cout << it->first << " : " << it->second << "\n";
-		it ++;
-	}
-}

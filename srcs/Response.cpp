@@ -255,12 +255,3 @@ std::string Response::getChunk(bool & endResponse)
 	return (str);	
 }
 
-//debug
-
-
-void Response::printresponse()
-{
-	std::cout << "==================================\n";
-	std::cout << messageContent;
-	std::cout << "==================================\n";
-}
