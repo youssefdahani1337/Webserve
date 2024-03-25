@@ -6,11 +6,10 @@ void    Client::cgiProcess(std::string tmpFile)
     char        **env;
     struct stat st;
 
-    env     = this->FillEnv();
+    env = this->FillEnv();
     path[0] = strdup(this->_cgiPath.c_str());
     path[1] = strdup(Tools::realPath(response->getFile()).c_str());
     path[2] = NULL;
-
     if (isPost())
     {
         if (!freopen(this->request->getFileName().c_str(), "r", stdin))
@@ -18,10 +17,12 @@ void    Client::cgiProcess(std::string tmpFile)
     }
     if (!freopen(tmpFile.c_str(), "w+", stdout))
         return ;
-    stat(path[0], &st);
-    if (!(st.st_mode & S_IXUSR))
+    if (stat(path[0], &st)!= 0 && !(st.st_mode & S_IXUSR))
         return ;
-    dup2(Tools::fdError, STDERR_FILENO);
+    if (access(path[1], R_OK) == -1)
+        return ;
+    if (dup2(Tools::fdError, STDERR_FILENO) == -1)
+        return ;
     execve(path[0], path, env);
     return ;
 }
