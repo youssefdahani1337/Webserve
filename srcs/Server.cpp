@@ -126,6 +126,8 @@ Location* Server::getMatchLocation(std::string url, std::string & path)
 			
 			if (*rootPath.rbegin() == '/' && rootPath != "/")
 				rootPath.resize(rootPath.size() -1);
+			if (res != "/")
+				url = url.substr(res.length());
 			path = rootPath + url;
 			return (new Location(*_locations[i]));
 		}
