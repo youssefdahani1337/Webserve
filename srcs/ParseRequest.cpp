@@ -73,7 +73,7 @@ bool    Client::checkPath()
     
     if (strlen(realPathLocation) > strlen(realPathResource))
     {
-        _statusCode = BAD_REQUEST;
+        _statusCode = FORBIDDEN;
         return (false); 
     }
     _path.assign(realPathResource);
