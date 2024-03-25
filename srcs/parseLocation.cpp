@@ -149,6 +149,8 @@ void	Location::_cgiPassDirective(std::vector<std::string> cgiInfos)
 		size++;
 		it ++;
 		issValue.clear();
+		cgiPath.clear();
+		cgiExt.clear();
 	}
 	return ;
 }
