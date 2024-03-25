@@ -50,8 +50,8 @@ bool        Client::sendResponse()
     }
     if (!endresponse)
     {
-     //   if (response->getStatus() == CGI_FILE)
-        //  remove(response->getFile().c_str());
+       if (response->getStatus() == CGI_FILE)
+         remove(response->getFile().c_str());
         Tools::updateLogFile(_statusCode, request->getMethod(), _server, response->getLogDetails());
     }
     return (endresponse);
