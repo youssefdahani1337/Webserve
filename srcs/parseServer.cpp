@@ -22,18 +22,26 @@ void	Server::_maxBodySizeDirective(std::string &value)
 	std::istringstream	issValue(value);
 	size_t				maxSize;
 	char				typeByte;
+	std::string			sizeStr;
 
+	issValue >> sizeStr;
+	if (sizeStr[0] == '-')
+		throw (std::runtime_error("Error1: invalid value in client_max_body_size directive"));
+	issValue.clear();
+	issValue.str(value);
 	issValue >> maxSize >> typeByte;
 	if (!issValue.eof())
 		issValue >> std::ws;
 	if (issValue.fail() || !issValue.eof() || (typeByte != 'B' && typeByte != 'M' && typeByte != 'G'))
-		throw (std::runtime_error("Error: invalid value in client_max_body_size directive"));
-	if (typeByte == 'B')
+		throw (std::runtime_error("Error2: invalid value in client_max_body_size directive..."));
+	if (typeByte == 'B' && maxSize <= 10 * pow(1024, 3))
 		this->_maxBodySize = maxSize;
+	else if (typeByte == 'M' && maxSize <= 10 * 1024)
+		this->_maxBodySize = maxSize * pow(1024, 2);
+	else if (typeByte == 'G' && maxSize <= 10)
+		this->_maxBodySize = maxSize * pow(1024, 3);
 	else
-		this->_maxBodySize = (typeByte == 'M') ? (maxSize * pow(1024, 2)) : (maxSize * pow(1024, 3));
-	if (this->_maxBodySize > 10 * pow(1024, 3))
-		throw (std::runtime_error("Error: invalid value in client_max_body_size directive"));
+		throw (std::runtime_error("Error3: invalid value in client_max_body_size directive"));
 	return ;
 }
 
@@ -66,10 +74,12 @@ void	Server::_errorPagesDirective(std::vector<std::string> &errorPgs)
 	while (it != ite)
 	{
 		issValue.str(*it);
-		issValue >> errorCode >> errorPath >> std::ws;
+		issValue >> errorCode >> errorPath;
 		if (!issValue.eof())
+			issValue >> std::ws;
+		if (!issValue.eof() || issValue.fail())
 			throw (std::runtime_error("Error: in the error_page directive"));
-		if (errorCode < 300 || errorCode > 599)
+		if (errorCode < 300 || errorCode > 599 || errorPath.empty())
 			throw (std::runtime_error("Error: error code must be between 300 and 599 in error_page directive"));
 		found = this->_errorPages.find(errorCode);
 		if (found != this->_errorPages.end())
@@ -146,8 +156,10 @@ void	Server::_listen(std::string &value)
 	std::string			_port;
 
 	issValue.str(value);
-	issValue >> port >> std::ws;
+	issValue >> port;
 	if (!issValue.eof())
+		issValue >> std::ws;
+	if (!issValue.eof() || issValue.fail())
 		throw (std::runtime_error("Error: invalid parameter in the listen directive"));
 	if (port <= 0 || port >= 65536)
 	{
@@ -189,6 +201,9 @@ void	Server::_fillServerDirectives(std::map<std::string, std::string> serverDire
 	}
 	if (!errorPages.empty())
 		this->_errorPagesDirective(errorPages);
+	found = serverDirectives.find(this->_directiveNames[3]);
+	if (found == serverDirectives.end())
+		this->_maxBodySize = 500 * pow(1024, 2);
 	return ;
 }
 

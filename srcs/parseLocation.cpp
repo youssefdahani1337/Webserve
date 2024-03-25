@@ -7,7 +7,7 @@ void	Location::_ressourceDirective(std::string &value)
 	std::string			ressource;
 
 	issValue >> ressource >> std::ws;
-	if (!issValue.eof())
+	if (!issValue.eof() || ressource[0] != '/')
 		throw (std::runtime_error("Error: invalid parameter in the location starting end point"));
 	this->_ressource = ressource;
 	return ;
@@ -54,13 +54,13 @@ void	Location::_redirectionDirective(std::string &value)
 	if (!issValue.eof())
 		issValue >> std::ws;
 	if (issValue.fail() || !issValue.eof())
-		throw (std::runtime_error("Error: invalid parameter in the return directive"));
+		throw (std::runtime_error("Error: invalid parameter or missing value in the return directive"));
 	if (statusCode < 0 || statusCode >= 1000)
 	{
 		std::cerr << "Error: invalid return code " << statusCode;
 		throw (std::runtime_error(""));
 	}
-	if (path == "")
+	if (path.empty())
 		throw (std::runtime_error("Error: empty path in the return directive"));
 	this->_redirection = std::make_pair(statusCode, path);
 	this->_isRedirectable = true;
@@ -141,7 +141,7 @@ void	Location::_cgiPassDirective(std::vector<std::string> cgiInfos)
 	{
 		issValue.str(*it);
 		issValue >> cgiPath >> cgiExt >> std::ws;
-		if (!issValue.eof())
+		if (!issValue.eof() || cgiPath.empty() || cgiExt.empty())
 			throw (std::runtime_error("Error: invalid parameter in cgi_pass directive"));
 		this->_cgiPass.insert(std::make_pair(cgiPath, cgiExt));
 		if (this->_cgiPass.size() == size)
@@ -164,6 +164,13 @@ void	Location::_fillLocationDirectives(std::map<std::string, std::string> locati
 	found = locationDirectives.find("allow");
 	if (found == locationDirectives.end())
 		this->_allowedMethods.push_back("GET");
+	found = locationDirectives.find("root");
+	if (found == locationDirectives.end())
+	{
+		found = locationDirectives.find("return");
+		if (found == locationDirectives.end())
+			throw (std::runtime_error("Error: missing necessary directives root or redirection directive"));
+	}
 	while (++i < size)
 	{
 		found = locationDirectives.find(this->_directiveNames[i]);
