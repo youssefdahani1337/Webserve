@@ -71,7 +71,7 @@ public:
     Client (int fd_client, std::vector<Server *> *server);
     ~Client();
 
-    bool                    outOfTimeRead();
+    bool                    outOfTimeRead(bool );
     bool                    outOfTimeSend();
     void                    timeOut();
     std::vector<Server *>   *getServers() const;

@@ -59,8 +59,8 @@ enum ParseReq_St
 #define MAX_BUFFER_HEADER 1024
 
 #define TIME_OUT 10
-#define TIME_OUT_UPLOAD 3
-#define MAX_TIME_OUT 10
+#define TIME_OUT_UPLOAD 100
+#define MAX_TIME_OUT 30
 #define TIME_OUT_SEND 20
 #define MAX_TIME_OUT_SEND 10
 #define BUFFER_SIZE 1024
