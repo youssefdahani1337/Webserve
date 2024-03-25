@@ -54,7 +54,7 @@ void	Location::_redirectionDirective(std::string &value)
 	if (!issValue.eof())
 		issValue >> std::ws;
 	if (issValue.fail() || !issValue.eof())
-		throw (std::runtime_error("Error: invalid parameter in the return directive"));
+		throw (std::runtime_error("Error: invalid parameter or missing value in the return directive"));
 	if (statusCode < 0 || statusCode >= 1000)
 	{
 		std::cerr << "Error: invalid return code " << statusCode;
