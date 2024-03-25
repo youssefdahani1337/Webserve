@@ -1,4 +1,2 @@
-2024-03-25 01:06:36 Server<127.0.0.1::8001 GET OUTPUT <455: Check path or method not allowed>
-2024-03-25 01:06:36 Server<127.0.0.1::8001 GET OUTPUT <455: >
-2024-03-25 01:06:47 Unknown Server  Unknown Method  OUTPUT <408: While reading request >
-2024-03-25 01:06:47 Server<127.0.0.1::8001Unknown Method  OUTPUT <408: >
+2024-03-25 00:25:08 Server<127.0.0.1::8001 DELETE OUTPUT <404: Check path or method not allowed>
+2024-03-25 00:25:08 Server<127.0.0.1::8001 DELETE OUTPUT <404: >
