@@ -104,7 +104,6 @@ bool Client::getResPath()
         _statusCode = NOT_FOUND;
         return (false);
     }
-    std::cout << "path" << _path << std::endl;
     if (!checkPath())
         return (false);
     return (true);

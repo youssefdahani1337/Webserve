@@ -52,6 +52,8 @@ bool        Client::sendResponse()
     {
         if (response->getStatus() == CGI_FILE)
           remove(response->getFile().c_str());
+        if (this->isPost())
+            remove(this->request->getFileName().c_str());
         Tools::updateLogFile(_statusCode, request->getMethod(), _server, response->getLogDetails());
     }
     return (endresponse);

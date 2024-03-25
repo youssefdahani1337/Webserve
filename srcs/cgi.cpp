@@ -59,8 +59,6 @@ bool    Client::serverProcess()
         request->setLogDetails("waipid failed in cgi");
     }
     this->response->setStatus((_statusCode == SUCCESS) ? CGI_FILE : CGI_ERROR);
-  if (this->isPost())
-      remove(this->request->getFileName().c_str());
   if (response->getStatus() == CGI_ERROR)
        remove(this->response->getFile().c_str());
     return (1);
@@ -107,9 +105,10 @@ void    Client::parseCgiFile()
 
 
     if ((isPost() && access(request->getFileName().c_str(), F_OK | R_OK) != 0) || 
-        access(response->getFile().c_str(), F_OK | W_OK))
+        access(response->getFile().c_str(), F_OK | W_OK) != 0)
     {
         _statusCode = INTERNAL_SERVER_ERROR;
+        response->setStatus(CGI_ERROR);
         return ;
     }
 
@@ -145,10 +144,11 @@ void    Client::parseCgiFile()
                 iss >> code;
                 if (tmpLine == "status" && !iss.fail())
                 {
-                    _statusCode = code;
                     if (code >= 400 && code <= 599)
                     {
+                     _statusCode = code;
                         response->setStatus(CGI_ERROR);
+                        infile.close();
                         return ;
                     }
                 }

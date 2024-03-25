@@ -15,7 +15,7 @@ html_content = """
 		</style>
 	</head>
 	<body>
-		<div class="container">
+    <div class="container">
 			<a href="../index.html" >Home</a>
 			<a href="../session/">Login</a>
 			<a href="./index.html" class="active">little Magic</a>

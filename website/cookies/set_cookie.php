@@ -11,9 +11,9 @@
 	<body>
     <div class="container">
 			<a href="../index.html" >Home</a>
-			<a href="../login.html">Login</a>
+			<a href="../session/index.html">Login</a>
 			<a href="../cgi-bin/">little Magic</a>
-			<a href="/cookies" class="active">Cookies</a>
+			<a href="./index.html" class="active">Cookies</a>
 			<a href="../about-us.html">About us</a>
 			<a href="../surprise.html">Surprise</a>
 		</div>

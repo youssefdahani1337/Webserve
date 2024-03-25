@@ -9,11 +9,11 @@
 		<link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		<div class="container">
-			<a href="../index.html" >Home</a>
-			<a href="../session/index.html">Login</a>
-			<a href="./index.html" class="active">little Magic</a>
-			<a href="../cookies/">Cookies</a>
+    <div class="container">
+			<a href="../index.html">Home</a>
+			<a href="./index.html" class="active">Log in</a>
+			<a href="../cgi-bin/">little Magic</a>
+			<a href="../cookies">Cookies</a>
 			<a href="../about-us.html">About us</a>
 			<a href="../surprise.html">Surprise</a>
 		</div>
