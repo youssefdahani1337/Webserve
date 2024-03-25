@@ -36,9 +36,13 @@ bool    Client::serverProcess()
     if (result > 0)
     {
         if (WIFEXITED(status))
+        {
             _statusCode = SUCCESS;
+            std::cout << "Hello\n";
+        }
         else
         {
+            std::cout << "Hi\n";
             request->setLogDetails("Bad Gateway");
             response->setStatus(CGI_ERROR);
             _statusCode = BAD_GATEWAY;
