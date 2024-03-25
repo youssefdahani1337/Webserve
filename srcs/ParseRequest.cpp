@@ -62,10 +62,11 @@ bool    Client::checkPath()
     char realPathLocation[PATH_MAX];
     char realPathResource[PATH_MAX];
 
-    if (!realpath(_location->getRootPath().c_str(), realPathLocation) ||
-        !realpath(_path.c_str(), realPathResource))
+    if (_location && _location->isRedir())
+        return (true);
+    if (!realpath(_location->getRootPath().c_str(), realPathLocation))
     {
-        _statusCode = NOT_FOUND;
+        _statusCode = 455;
         return (false);
     }
     if (strncmp(realPathLocation, realPathResource, strlen(realPathLocation)) != 0)
@@ -87,7 +88,7 @@ bool Client::getResPath()
     }
     if ((_location = _server->getMatchLocation(request->getResource(), _path)) == NULL)
     {
-        _statusCode = NOT_FOUND;
+        _statusCode = 456;
         return (false);
     }
     if (!checkPath())
