@@ -64,7 +64,7 @@ int Client::DeleteHandler()
 
     if (stat(this->_path.c_str(), &infos))
 		return (Tools::updateLogFile(NOT_FOUND, request->getMethod() , this->_server, "path to delete not found"), NOT_FOUND);
-	if ((!(infos.st_mode & S_IWUSR) || !(infos.st_mode & S_IRUSR)) && S_ISREG(infos.st_mode))
+	if (!(infos.st_mode & S_IWUSR))
 		return (Tools::updateLogFile(FORBIDDEN, request->getMethod() , this->_server, "don't have permissions to delete"), FORBIDDEN);
     if (infos.st_mode & S_IFREG)
 	{
@@ -76,7 +76,7 @@ int Client::DeleteHandler()
 		uri = this->request->getResource();
 		if (*(uri.end() - 1) != '/')
 			return (Tools::updateLogFile(CONFLICT, request->getMethod() , _server, "conflict in uri"), CONFLICT);
-		if (!(infos.st_mode & S_IWUSR) || !(infos.st_mode & S_IRUSR))
+		if (!(infos.st_mode & S_IRUSR))
 			return (Tools::updateLogFile(FORBIDDEN, request->getMethod() , this->_server, "don't have permissions to delete directory"), FORBIDDEN);
 		status	= this->DeleteDirectory(_path);
 		if (status != NO_CONTENT)
